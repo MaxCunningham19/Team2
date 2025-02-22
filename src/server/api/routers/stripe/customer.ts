@@ -8,15 +8,13 @@ export const customerRouter = createTRPCRouter({
   create_customer: publicProcedure // create a new customer
     .input(
       z.object({
-        email: z.string() || undefined,
-        phone: z.string() || undefined,
+        email: z.string(),
       }),
     ) // TODO(max): add in address collection possibilities
     .query(async ({ input }) => {
       try {
         const customer = await stripe.customers.create({
           email: input.email,
-          phone: input.phone,
         });
         return { customerID: customer.id };
       } catch (error) {
