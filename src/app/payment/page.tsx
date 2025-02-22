@@ -7,7 +7,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { api } from "~/trpc/server";
+import { getIntent } from "./actions";
 
 // Load your Stripe public key
 const stripePromise = loadStripe(process.env.STRIPE_TEST_PUBLIC_KEY ?? "");
@@ -18,13 +18,7 @@ export default function Home() {
   // Fetch the client secret when the component mounts
   useEffect(() => {
     const createPaymentIntent = async () => {
-      const { paymentIntent } = await api.stripe.payments.createDirectPayment({
-        stripeCustomerId: "",
-        amountInCent: 0,
-        artistStripeID: "string",
-        maxApplicationFeeInCent: 0,
-        applicationFeePercentage: 0,
-      });
+      const paymentIntent = await getIntent();
       setClientSecret(paymentIntent.client_secret);
     };
 
