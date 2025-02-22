@@ -1,5 +1,6 @@
 "use server";
 import { api } from "~/trpc/server";
+import { Database } from "@/utils/supabase/types";
 
 export async function getIntent() {
   const { error, paymentIntent } =
