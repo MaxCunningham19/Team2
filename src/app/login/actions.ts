@@ -44,13 +44,13 @@ export async function signup(formData: FormData) {
     email: data.email,
   });
 
-  let user = userInfo.data.user;
+  const user = userInfo.data.user;
 
-  const { error } = await supabase.from('users').upsert({
+  const { error } = await supabase.from("users").upsert({
     id: user?.id,
     full_name: formData.get("fullName") as string,
     stripe_customer_id: customerData.customerID,
-  })
+  }); // TODO(TOM): add in error handling
 
   revalidatePath("/", "layout");
   redirect("/");
