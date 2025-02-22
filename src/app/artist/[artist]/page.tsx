@@ -1,6 +1,7 @@
 import Image from "next/image"
 import PearlEarring from "../../../../public/pearl-earring.jpg"
 import { Button } from "~/app/_components/ui/button"
+import { ArtCard } from "~/app/_components/art-card"
 
 export default async function Page({
 	params,
@@ -28,6 +29,9 @@ export default async function Page({
 						<Button>Commission</Button>
 						<Button>Follow</Button>
 					</div>
+				</div>
+				<div>
+					<ArtCard />
 				</div>
 			</div>
 		</>
