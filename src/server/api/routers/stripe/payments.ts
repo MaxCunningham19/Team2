@@ -32,17 +32,19 @@ export const paymentsRouter = createTRPCRouter({
             destination: input.artistStripeID,
           },
         });
-        return { paymentIntent };
+        return { paymentIntent: paymentIntent };
       } catch (error) {
         console.error(
           "An error occurred when calling the Stripe API to create an account link:",
           error,
         );
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Error when creating Link",
-          cause: error,
-        });
+        return {
+          error: new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Error when creating Link",
+            cause: error,
+          }),
+        };
       }
     }),
 });

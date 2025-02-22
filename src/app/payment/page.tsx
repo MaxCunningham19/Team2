@@ -19,7 +19,9 @@ export default function Home() {
   useEffect(() => {
     const createPaymentIntent = async () => {
       const paymentIntent = await getIntent();
-      setClientSecret(paymentIntent.client_secret);
+      if (!!paymentIntent) {
+        setClientSecret(paymentIntent.client_secret);
+      }
     };
 
     void createPaymentIntent().then();
