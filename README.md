@@ -2,6 +2,6 @@
 
 ## TODO:
 
-- [] Pick project
-- [] Design system
-- [] Write more todos
+- [] Pick between Patreon Style project and Payment Processor tool
+- [] Select MVP features
+- [] Design System
