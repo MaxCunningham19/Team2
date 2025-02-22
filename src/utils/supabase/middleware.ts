@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
+export const signin_page_url = "/sign-in";
+
 export const updateSession = async (request: NextRequest) => {
   // This `try/catch` block is only here for the interactive tutorial.
   // Feel free to remove once you have Supabase connected.
@@ -41,11 +43,15 @@ export const updateSession = async (request: NextRequest) => {
 
     // protected routes
     if (request.nextUrl.pathname.startsWith("/protected") && user.error) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+      return NextResponse.redirect(new URL(signin_page_url, request.url));
     }
 
     if (request.nextUrl.pathname === "/account" && !user.error) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+      return NextResponse.redirect(new URL(signin_page_url, request.url));
+    }
+
+    if (request.nextUrl.pathname === "/payment" && !user.error) {
+      return NextResponse.redirect(new URL(signin_page_url));
     }
 
     return response;
