@@ -30,7 +30,7 @@ export default async function Page({
 						<Button>Follow</Button>
 					</div>
 				</div>
-				<div className="mx-auto grid grid-cols-3 gap-x-32">
+				<div className="mx-auto grid grid-cols-3 gap-32 mt-10">
 					<ArtCard />
 					<ArtCard />
 					<ArtCard />
