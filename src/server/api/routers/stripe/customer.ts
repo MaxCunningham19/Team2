@@ -4,7 +4,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { stripe } from "./stripe";
 
-export const accountRouter = createTRPCRouter({
+export const customerRouter = createTRPCRouter({
   create_customer: publicProcedure // create a new customer
     .input(
       z.object({
