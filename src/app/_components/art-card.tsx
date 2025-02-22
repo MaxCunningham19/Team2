@@ -1,5 +1,6 @@
 import Image from "next/image"
 import AppleGuy from "../../../public/apple-guy.jpg"
+import Pearl from "../../../public/pearl-earring.jpg"
 import { Button } from "./ui/button"
 
 export const ArtCard = () => {
