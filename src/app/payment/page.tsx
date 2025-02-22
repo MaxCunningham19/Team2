@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -9,7 +10,7 @@ import {
 import { api } from "~/trpc/server";
 
 // Load your Stripe public key
-const stripePromise = loadStripe(process.env.STRIPE_TEST_PUBLIC_KEY);
+const stripePromise = loadStripe(process.env.STRIPE_TEST_PUBLIC_KEY ?? "");
 
 export default function Home() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -17,12 +18,17 @@ export default function Home() {
   // Fetch the client secret when the component mounts
   useEffect(() => {
     const createPaymentIntent = async () => {
-      const res = await api.stripe.payments.createDirectPayment({});
-      const data = await res.json();
-      setClientSecret(data.clientSecret);
+      const { paymentIntent } = await api.stripe.payments.createDirectPayment({
+        stripeCustomerId: "",
+        amountInCent: 0,
+        artistStripeID: "string",
+        maxApplicationFeeInCent: 0,
+        applicationFeePercentage: 0,
+      });
+      setClientSecret(paymentIntent.client_secret);
     };
 
-    createPaymentIntent();
+    void createPaymentIntent().then();
   }, []);
 
   return (
@@ -32,14 +38,14 @@ export default function Home() {
       {/* Only show the payment form once the client secret is received */}
       {clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <CheckoutForm />
+          <CheckoutForm clientSecret={clientSecret} />
         </Elements>
       )}
     </div>
   );
 }
 
-function CheckoutForm() {
+function CheckoutForm(props: { clientSecret: string }) {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -54,7 +60,7 @@ function CheckoutForm() {
     setIsProcessing(true);
 
     const { error, paymentIntent } = await stripe.confirmCardPayment(
-      clientSecret!, // The client secret obtained from the server
+      props.clientSecret, // The client secret obtained from the server
       {
         payment_method: {
           card: elements.getElement(CardElement)!,
@@ -66,7 +72,7 @@ function CheckoutForm() {
     );
 
     if (error) {
-      setErrorMessage(error.message);
+      setErrorMessage(error.message ?? "");
     } else if (paymentIntent?.status === "succeeded") {
       alert("Payment succeeded!");
     } else {
