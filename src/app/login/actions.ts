@@ -33,16 +33,24 @@ export async function signup(formData: FormData) {
     password: formData.get("password") as string,
   };
 
-  const { error } = await supabase.auth.signUp(data);
+  const userInfo = await supabase.auth.signUp(data);
 
-  if (error) {
-    console.error("Signup error:", error);
+  if (userInfo.error) {
+    console.error("Signup error:", userInfo.error);
     redirect("/error");
   }
 
-  const customerId = await api.stripe.customer.create_customer({
+  const customerData = await api.stripe.customer.create_customer({
     email: data.email,
   });
+
+  let user = userInfo.data.user;
+
+  const { error } = await supabase.from('users').upsert({
+    id: user?.id,
+    full_name: formData.get("fullName") as string,
+    stripe_customer_id: customerData.customerID,
+  })
 
   revalidatePath("/", "layout");
   redirect("/");
