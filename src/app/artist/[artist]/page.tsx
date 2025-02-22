@@ -9,6 +9,7 @@ export default async function Page({
 	params: Promise<{ artist: string }>
 }) {
 	const slug = (await params).artist
+	const isArtist = true; // Change this to an API call that checks if the `slug` == user.artistID
 	console.log(slug)
 
 	return (
@@ -26,8 +27,21 @@ export default async function Page({
 					</h2>
 
 					<div className="flex flex-row gap-x-4 pt-2">
-						<Button>Commission</Button>
-						<Button>Follow</Button>
+						{isArtist ?
+							<>
+								<Button>
+									Edit Profile
+								</Button>
+								<Button>
+									Create New Work
+								</Button>
+							</>
+							:
+							<>
+								<Button>Commission</Button>
+								<Button>Follow</Button>
+							</>
+						}
 					</div>
 				</div>
 				<div className="mx-auto mt-10 grid grid-cols-3 gap-x-32 gap-y-20">
