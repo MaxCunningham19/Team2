@@ -3,6 +3,17 @@ import PearlEarring from "../../../../public/pearl-earring.jpg"
 import { Button } from "~/app/_components/ui/button"
 import { ArtCard } from "~/app/_components/art-card"
 
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog"
+import { CreateNewWorkDialog } from "~/app/_components/artist-page/create-new-work-dialog"
+import { EditProfileDialog } from "~/app/_components/artist-page/edit-profile-dialog"
+
 export default async function Page({
 	params,
 }: {
@@ -29,12 +40,8 @@ export default async function Page({
 					<div className="flex flex-row gap-x-4 pt-2">
 						{isArtist ?
 							<>
-								<Button>
-									Edit Profile
-								</Button>
-								<Button>
-									Create New Work
-								</Button>
+								<EditProfileDialog />
+								<CreateNewWorkDialog />
 							</>
 							:
 							<>
