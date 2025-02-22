@@ -18,8 +18,8 @@ export default function AccountForm({ user }: { user: User | null }) {
       setLoading(true)
 
       const { data, error, status } = await supabase
-        .from('profiles')
-        .select(`full_name, username, website, avatar_url`)
+        .from('users')
+        .select(`full_name, avatar_url`)
         .eq('id', user?.id)
         .single()
 
@@ -30,8 +30,6 @@ export default function AccountForm({ user }: { user: User | null }) {
 
       if (data) {
         setFullname(data.full_name)
-        setUsername(data.username)
-        setWebsite(data.website)
         setAvatarUrl(data.avatar_url)
       }
     } catch (error) {
@@ -46,16 +44,12 @@ export default function AccountForm({ user }: { user: User | null }) {
   }, [user, getProfile])
 
   async function updateProfile({
-    username,
     stripe_customer_id,
     fullname,
-    website,
     avatar_url,
   }: {
-    username: string | null
     stripe_customer_id: string | null
     fullname: string | null
-    website: string | null
     avatar_url: string | null
   }) {
     try {
@@ -64,9 +58,7 @@ export default function AccountForm({ user }: { user: User | null }) {
       const { error } = await supabase.from('users').upsert({
         id: user?.id,
         full_name: fullname,
-        username,
         stripe_customer_id, // TODO: Get stripe_customer_id from stripe
-        website,
         avatar_url:"https://example.com/avatar.jpg",
         updated_at: new Date().toISOString(),
       })
@@ -119,7 +111,7 @@ export default function AccountForm({ user }: { user: User | null }) {
       <div>
         <button
           className="button primary block"
-          onClick={() => updateProfile({ fullname, username, website, avatar_url, stripe_customer_id: '' })}
+          onClick={() => updateProfile({ fullname, avatar_url, stripe_customer_id: '' })}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
