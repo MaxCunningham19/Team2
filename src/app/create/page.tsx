@@ -40,7 +40,7 @@ export default function InputFile() {
 
     return (
         <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="picture">Picture</Label>
+            <Label className="text-secondary-foreground" htmlFor="picture">Picture</Label>
             <Input id="picture" type="file" onChange={handleFileChange} />
             {imageUrl && <Image src={imageUrl} alt="Selected image" width={200} height={200} />}
             <Button onClick={handleUpload} disabled={!imageUrl || isPending}>Upload</Button>
