@@ -2,7 +2,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
-import Avatar from './avatar'
+
+// ...
 
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClient()
@@ -41,17 +42,18 @@ export default function AccountForm({ user }: { user: User | null }) {
   }, [user, supabase])
 
   useEffect(() => {
-    if (user?.id) {
-      getProfile()
-    }
+    getProfile()
   }, [user, getProfile])
 
   async function updateProfile({
     username,
+    stripe_customer_id,
+    fullname,
     website,
     avatar_url,
   }: {
     username: string | null
+    stripe_customer_id: string | null
     fullname: string | null
     website: string | null
     avatar_url: string | null
@@ -59,12 +61,13 @@ export default function AccountForm({ user }: { user: User | null }) {
     try {
       setLoading(true)
 
-      const { error } = await supabase.from('profiles').upsert({
-        id: user?.id as string,
+      const { error } = await supabase.from('users').upsert({
+        id: user?.id,
         full_name: fullname,
         username,
+        stripe_customer_id, // TODO: Get stripe_customer_id from stripe
         website,
-        avatar_url,
+        avatar_url:"https://example.com/avatar.jpg",
         updated_at: new Date().toISOString(),
       })
       if (error) throw error
@@ -78,15 +81,9 @@ export default function AccountForm({ user }: { user: User | null }) {
 
   return (
     <div className="form-widget">
-      <Avatar
-        uid={user?.id ?? null}
-        url={avatar_url}
-        size={150}
-        onUpload={(url) => {
-          setAvatarUrl(url)
-          updateProfile({ fullname, username, website, avatar_url: url })
-        }}
-      />
+
+      {/* ... */}
+
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" type="text" value={user?.email} disabled />
@@ -122,7 +119,7 @@ export default function AccountForm({ user }: { user: User | null }) {
       <div>
         <button
           className="button primary block"
-          onClick={() => updateProfile({ fullname, username, website, avatar_url })}
+          onClick={() => updateProfile({ fullname, username, website, avatar_url, stripe_customer_id: '' })}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
