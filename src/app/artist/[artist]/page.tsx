@@ -14,7 +14,7 @@ export default async function Page({
 	return (
 		<>
 			<div className="h-80 w-screen bg-primary"></div>
-			<div className="relative">
+			<div className="relative flex flex-col">
 				<Image src={PearlEarring} alt="Artist icon" className="absolute -top-32 left-32 h-64 w-64 rounded-full" />
 				<div className="ml-96 p-4">
 					<h1 className="text-5xl font-bold">Placeholder Name</h1>
@@ -30,7 +30,17 @@ export default async function Page({
 						<Button>Follow</Button>
 					</div>
 				</div>
-				<div>
+				<div className="mx-auto grid grid-cols-3 gap-x-32">
+					<ArtCard />
+					<ArtCard />
+					<ArtCard />
+					<ArtCard />
+					<ArtCard />
+					<ArtCard />
+					<ArtCard />
+					<ArtCard />
+					<ArtCard />
+					<ArtCard />
 					<ArtCard />
 				</div>
 			</div>
