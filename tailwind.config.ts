@@ -11,9 +11,7 @@ export default {
                                         'var(--font-geist-sans)',
                                         ...fontFamily.sans
                                 ],
-                                serif: [
-                                        'Cormorant Garamond'
-                                ]
+                                serif: ['var(--font-playfair-display)', ...fontFamily.serif],
                         },
                         borderRadius: {
                                 lg: 'var(--radius)',
