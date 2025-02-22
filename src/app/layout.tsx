@@ -1,13 +1,18 @@
 import "~/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
+import { Playfair_Display } from 'next/font/google'
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
 
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair-display',
+})
+
 export const metadata: Metadata = {
   title: "novanti",
-  description: "The nouveau art marketplace",
+  description: "The novel art auction-house",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -15,7 +20,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${playfair.variable}`}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>

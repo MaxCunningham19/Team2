@@ -14,8 +14,15 @@
 
 ## Pages:
 - [ ] Search Page (finding art and artists)
+  - [ ] Keyword Search Bar: Enter subject, artist, or style.
+  - [ ] Filters:
+    - [ ] Mood/Theme
+    - [ ] Art Style Tags (with dynamic tag cloud)
+    - [ ] Color
+    - [ ] Price/Commission Range
+  - [ ] Sorting Options: By popularity, newest, or relevance.
 - [ ] Artists Page (viewing an artists work + ability to commison)
-- [ ] Commisions page 
+- [ ] Commisions page
   - [ ] User
     - [ ] Before Purchase (The ability to commission art, mood board, set up commision rules)
     - [ ] After Purchase (Review stages of the commision)
