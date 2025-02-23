@@ -8,10 +8,10 @@ export default {
                 extend: {
                         fontFamily: {
                                 sans: [
-                                        'var(--font-geist-sans)',
+                                        'Poppins',
                                         ...fontFamily.sans
                                 ],
-                                serif: ['var(--font-playfair-display)', ...fontFamily.serif],
+                                serif: ['Playfair Display', ...fontFamily.serif],
                         },
                         borderRadius: {
                                 lg: 'var(--radius)',

@@ -2,13 +2,18 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { createClient } from "@/utils/supabase/client";
-import { type commission, type Milestone } from "src/utils/supabase/types";
+import {
+  MilestoneUpdate,
+  type Commission,
+  type Milestone,
+} from "src/utils/supabase/types";
+import { MilestoneProps } from "~/app/_components/commission/milestone";
 
 export const commissionRouter = createTRPCRouter({
   createcommission: publicProcedure
     .input(
       z.object({
-        commission: z.custom<commission>(),
+        commission: z.custom<Commission>(),
       }),
     )
     .query(async ({ input }) => {
@@ -34,7 +39,7 @@ export const commissionRouter = createTRPCRouter({
         .select(`*`)
         .eq("id", input.commissionID)
         .single();
-      return { commission: data as commission, error };
+      return { commission: data as Commission, error };
     }),
 
   getMilestones: publicProcedure
@@ -51,7 +56,7 @@ export const commissionRouter = createTRPCRouter({
         .select(`*`)
         .eq("commission_id", input.commissionID);
 
-      const milestones = data as Milestone[];
+      const milestones = data as MilestoneProps[];
       milestones.sort((a, b) => {
         return a.order_id - b.order_id;
       });
@@ -82,12 +87,8 @@ export const commissionRouter = createTRPCRouter({
         .select(`*`)
         .eq("commission_id", input.commissionID);
 
-      const milestones = milestonesData as Milestone[];
-      return {
-        commission: data as commission,
-        milestones: milestones,
-        milestonesError,
-      };
+      const milestones = milestonesData as MilestoneProps[];
+      return { commission: data as Commission, milestones: milestones, error };
     }),
 
   updatecommission: publicProcedure
@@ -188,14 +189,14 @@ export const commissionRouter = createTRPCRouter({
 
       if (milestoneUpdateErrors.length > 0) {
         return {
-          commission: commissionData as commission,
+          commission: commissionData as Commission,
           milesones: milestoneData,
           error: milestoneUpdateErrors,
         };
       }
 
       return {
-        commission: commissionData as commission,
+        commission: commissionData as Commission,
         milesones: milestoneData,
         error: null,
       };
