@@ -74,6 +74,7 @@ export type Milestone = {
   desc: string;
   id: string;
   order_id: number;
+  title: string;
 };
 
 export type MilestoneUpdate = {

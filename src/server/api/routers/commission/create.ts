@@ -5,14 +5,14 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { createClient } from "@/utils/supabase/client";
 import {
   type MilestoneInsert,
-  type commissionInsert,
+  type CommissionInsert,
 } from "~/utils/supabase/types";
 
 export const createRouter = createTRPCRouter({
   commission: publicProcedure
     .input(
       z.object({
-        commission: z.custom<commissionInsert>(),
+        commission: z.custom<CommissionInsert>(),
         milestones: z.array(z.custom<MilestoneInsert>()),
       }),
     )
@@ -24,7 +24,7 @@ export const createRouter = createTRPCRouter({
       Object.keys(input.commission).forEach((key) => {
         commissionkeys.set(
           key,
-          input.commission[key as keyof commissionInsert],
+          input.commission[key as keyof CommissionInsert],
         );
       });
 

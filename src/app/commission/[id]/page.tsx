@@ -8,7 +8,8 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
-  const { commission, milestones, error } = await api.commission.getCommissionAndMilestones({ commissionID: id });
+  const { commission, milestones, error } =
+    await api.commission.getCommissionAndMilestones({ commissionID: id });
 
   if (!!error || commission == null) {
     return <div> </div>;
@@ -19,14 +20,20 @@ export default async function Page({
   if (
     user == null ||
     user.id != commission.user_id ||
-    artist?.id != commission.artist_id
+    artist?.id != commission.artist_id ||
+    commission.price == null
   ) {
     return <div></div>;
   }
 
   let milestoneProps: MilestoneProps[] = [];
   if (milestones !== null) {
-    milestoneProps = milestones as MilestoneProps[];
+    milestoneProps = milestones.map((milestone) => {
+      return {
+        ...milestone,
+        percent: milestone.amount / (commission.price ?? milestone.amount),
+      };
+    });
   }
 
   return (

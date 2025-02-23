@@ -2,12 +2,7 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { createClient } from "@/utils/supabase/client";
-import {
-  MilestoneUpdate,
-  type Commission,
-  type Milestone,
-} from "src/utils/supabase/types";
-import { MilestoneProps } from "~/app/_components/commission/milestone";
+import { type Commission, type Milestone } from "src/utils/supabase/types";
 
 export const commissionRouter = createTRPCRouter({
   createcommission: publicProcedure
@@ -56,7 +51,7 @@ export const commissionRouter = createTRPCRouter({
         .select(`*`)
         .eq("commission_id", input.commissionID);
 
-      const milestones = data as MilestoneProps[];
+      const milestones = data as Milestone[];
       milestones.sort((a, b) => {
         return a.order_id - b.order_id;
       });
@@ -87,7 +82,7 @@ export const commissionRouter = createTRPCRouter({
         .select(`*`)
         .eq("commission_id", input.commissionID);
 
-      const milestones = milestonesData as MilestoneProps[];
+      const milestones = milestonesData as Milestone[];
       return { commission: data as Commission, milestones: milestones, error };
     }),
 

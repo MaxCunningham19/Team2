@@ -37,6 +37,6 @@ export const updateRouter = createTRPCRouter({
         return { error: errr };
       }
 
-      return { milestoneID: milestoneID.id };
+      return { milestoneID: milestoneID.id as string };
     }),
 });

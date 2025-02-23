@@ -4,7 +4,7 @@ import { createRouter } from "./create";
 import { updateRouter } from "./update";
 
 import { createClient } from "@/utils/supabase/client";
-import { type commission, type Milestone } from "~/utils/supabase/types";
+import { type Commission, type Milestone } from "~/utils/supabase/types";
 import { z } from "zod";
 
 export const commissionRouter = createTRPCRouter({
@@ -34,7 +34,7 @@ export const commissionRouter = createTRPCRouter({
       if (commissionID == null || !!error) {
         return { error: error };
       }
-      const commission = commissionID as commission;
+      const commission = commissionID as Commission;
 
       const { data: milestoneData, error: milesonesError } = await supabase
         .from("milestones")
