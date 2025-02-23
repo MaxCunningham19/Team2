@@ -88,7 +88,7 @@ export default function Page() {
                 Add Filter
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
+              <DropdownMenuContent className="max-h-60 w-56 overflow-y-auto">
                 {Object.entries(filterOptions).map(([category, values]) => (
                   <div key={category}>
                     <DropdownMenuLabel>{category}</DropdownMenuLabel>
