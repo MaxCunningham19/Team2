@@ -6,6 +6,7 @@ import { ArtCard } from "~/app/_components/art-card"
 
 import { CreateNewWorkDialog } from "~/app/_components/artist-page/create-new-work-dialog"
 import { EditProfileDialog } from "~/app/_components/artist-page/edit-profile-dialog";
+import Header from "~/app/_components/header";
 
 
 export default async function Page({
@@ -21,6 +22,7 @@ export default async function Page({
 
   return (
     <>
+    <Header />
       <div className="bg-primary h-80 w-screen"></div>
       <div className="relative flex flex-col">
         <Image
