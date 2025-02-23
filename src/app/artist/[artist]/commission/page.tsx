@@ -21,6 +21,8 @@ import {
     ThreeStepCommission,
     threeStepMilestones,
 } from "@/components/commission/three-step-commission";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/app/_components/ui/card";
+import { Label } from "~/app/_components/ui/label";
 
 
 const milestones = [
@@ -63,11 +65,7 @@ export default function NewCommission() {
     const [user, setUser] = useState<null | string | undefined>(null);
     const [price, setPrice] = useState(0);
     const [desc, setDesc] = useState("");
-    const [artistName, setArtistName] = useState<string>("");
-    console.log("String params", artistId);
-    const artistData = api.artist.getArtist.useQuery({ id: artistId });
-
-    console.log("Artist data", artistData);
+    const artistData = api.artist.getArtist.useQuery({ id: artistId }, { staleTime: 1000 * 60 * 5 });
 
     useEffect(() => {
         async function fetchUserData() {
@@ -81,6 +79,25 @@ export default function NewCommission() {
         void fetchUserData();
     }, []);
 
+    function createNewCommission() {
+        if (user === undefined) {
+            redirect("/login");
+        }
+        if (user === null) {
+            return;
+        }
+        createCommission({
+            commission: {
+                artist_id: artistId,
+                user_id: user,
+                desc: desc,
+                price,
+                work_id: null,
+            },
+            milestones: fifteyFifteyMilestones(price),
+        });
+    }
+
     // Handle redirect if user is not fetched
     if (user === undefined) {
         redirect("/login");
@@ -90,11 +107,11 @@ export default function NewCommission() {
 
     return (
         <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 mt-40">
                 <div>
                     <h1 className="text-3xl font-bold text-center text-gray-900 mb-4">Create a new commission</h1>
                     <p className="text-center text-gray-600 mb-8">
-                        {artistData.data?.artist?.display_name} is accepting commissions. Please fill out the form below to get started.
+                        {artistData.data?.artist?.display_name} is accepting commissions. See conditions below.
                     </p>
                     <div className="relative">
                         <div className="space-y-12">
@@ -103,21 +120,37 @@ export default function NewCommission() {
                     </div>
                 </div>
                 <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">Commission Details</h2>
-                    <div className="space-y-4">
-                        <Input
-                            name="Price"
-                            type="number"
-                            value={price}
-                            onChange={(e) => setPrice(parseInt(e.target.value))}
-                        />
-                        <Textarea
-                            name="Description"
-                            value={desc}
-                            onChange={(e) => setDesc(e.target.value)}
-                        />
-                        <Button>Create Commission</Button>
-                    </div>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Create a new commission</CardTitle>
+                            <CardDescription>
+                                Fill out the form below to get started with your commission.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label>Commission Budget</Label>
+                                    <Input
+                                        name="Price"
+                                        type="number"
+                                        value={price}
+                                        onChange={(e) => setPrice(parseInt(e.target.value))}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Project Description</Label>
+                                    <Textarea
+                                        name="Description"
+                                        value={desc}
+                                        onChange={(e) => setDesc(e.target.value)}
+                                    />
+                                </div>
+                                <Button onClick={createNewCommission}>Create Commission</Button>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </div>

@@ -27,6 +27,7 @@ export type Commission = {
 export type CommissionInsert = {
   artist_id?: string;
   created_at?: string;
+  desc?: string | null;
   id?: string;
   price?: number | null;
   work_id?: string | null;
