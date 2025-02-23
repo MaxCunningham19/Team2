@@ -1,5 +1,7 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { createClient } from "@/utils/supabase/server";
+import { z } from "zod";
+import { type Artist } from "~/utils/supabase/types";
 
 export const artistRouter = createTRPCRouter({
   getArtistID: publicProcedure.query(async () => {
@@ -22,4 +24,26 @@ export const artistRouter = createTRPCRouter({
     }
     return { artist_id: data.artist_id as string };
   }),
+
+  getArtist: publicProcedure
+    .input(z.object({ id: z.string().nullish() }))
+    .query(async ({ input }) => {
+      const supabase = await createClient();
+
+      if (!!input.id) {
+        return { artist: null };
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { data, error } = await supabase
+        .from("artists")
+        .select("*")
+        .eq("id", input.id)
+        .single();
+
+      if (error !== null) {
+        return { artist: null };
+      }
+      return { artist: data as Artist };
+    }),
 });

@@ -2,6 +2,7 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { stripeRouter } from "./routers/stripe/stripe";
 import { commisionRouter } from "./routers/commsion";
 import { artistRouter } from "./routers/artist";
+import { workRouter } from "./routers/work";
 
 /**
  * This is the primary router for your server.
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   stripe: stripeRouter,
   commision: commisionRouter,
   artist: artistRouter,
+  work: workRouter,
 });
 
 // export type definition of API
