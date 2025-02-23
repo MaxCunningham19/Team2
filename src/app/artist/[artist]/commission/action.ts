@@ -11,23 +11,22 @@ export const createCommission = async function (params: {
 }) {
   const supabase = await createClient();
 
-  const { data: commissionID, error } = await supabase
+  const { error } = await supabase
     .from("commission")
     .insert([params.commission])
-    .select("id")
-    .single();
+    .eq("id", params.commission.id)
 
-  if (!!error || commissionID == null) {
+  if (!!error) {
     return { error: error };
   }
 
   if (params.milestones.length <= 0) {
-    return { commissionID: commissionID.id as string };
+    return { commissionID: params.commission.id as string };
   }
 
   const milestonesWithCommissionId = params.milestones.map((milestone) => ({
     ...milestone,
-    commission_id: commissionID.id as string, // Add commission ID to each milestone
+    commission_id: params.commission.id as string, // Add commission ID to each milestone
   }));
 
   milestonesWithCommissionId.sort((a, b) => {
@@ -42,17 +41,15 @@ export const createCommission = async function (params: {
     const { error: deleteError } = await supabase
       .from("commission")
       .delete()
-      .eq("id", commissionID);
+      .eq("id", params.commission.id);
 
     return { error: milesoneError, deleted: !deleteError };
   }
 
   return {
-    commissionID: commissionID.id as string,
+    commissionID: params.commission.id as string,
     milestoneIDs: milestoneIDs as string[] | null,
   };
-
-  return { commissionID, milestoneIDs, error };
 };
 
 export const getUser = async function () {
