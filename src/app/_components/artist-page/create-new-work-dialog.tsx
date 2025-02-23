@@ -35,18 +35,16 @@ const formSchema = z.object({
   imageUrl: z.string(),
 })
 
-export function CreateNewWorkDialog() {
+export function CreateNewWorkDialog({ artistId }: { artistId: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
-  const { id } = useParams(); // Move this hook call outside of onSubmit
-
-  console.log(id);
+  const id = artistId
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    let supabase = createClient();
-    let { title, desc, quantity, imageUrl } = values;
-  
+    const supabase = createClient();
+    const { title, desc, quantity, imageUrl } = values;
+
     const { error } = await supabase.from("works").insert([
       {
         artist_id: id,
@@ -56,7 +54,7 @@ export function CreateNewWorkDialog() {
         image_url: imageUrl,
       },
     ]);
-  
+
     if (error) {
       console.error("Error inserting work:", error);
     } else {

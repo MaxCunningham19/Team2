@@ -17,12 +17,10 @@ export default async function Page({
   const slug = (await params).artist;
   const { artist_id } = await api.artist.getArtistID();
   const isArtist = slug === artist_id; // Change this to an API call that checks if the `slug` == user.artistID
-  console.log(slug);
-  console.log(artist_id);
 
   return (
     <>
-    <Header />
+      <Header />
       <div className="bg-primary h-80 w-screen"></div>
       <div className="relative flex flex-col">
         <Image
@@ -41,7 +39,7 @@ export default async function Page({
             {isArtist ? (
               <>
                 <EditProfileDialog />
-                <CreateNewWorkDialog />
+                <CreateNewWorkDialog artistId={slug} />
               </>
             ) : (
               <>

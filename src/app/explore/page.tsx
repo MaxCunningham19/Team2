@@ -5,7 +5,7 @@ import Link from "next/link";
 import { X, Plus, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { WorkCard } from "../_components/work/work-card"; 
+import { WorkCard } from "../_components/work/work-card";
 
 import {
   DropdownMenu,
@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "~/app/_components/ui/dropdown-menu";
 import { Button } from "../_components/ui/button";
-import { Work } from "~/utils/supabase/types";
+import type { Work } from "~/utils/supabase/types";
 
 // Filter categories and options
 const filterOptions = {
@@ -67,12 +67,13 @@ export default function Page() {
         console.error(artistSelectError);
         return;
       }
-      
+
       setWorks(works as Work[]);
+      console.log(works)
     }
 
-    fetchWorks();
-  });
+    void fetchWorks();
+  }, [supabase]);
 
   return (
     <main className="container mx-auto px-4 py-8">
