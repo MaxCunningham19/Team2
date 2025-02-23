@@ -2,45 +2,45 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { createClient } from "@/utils/supabase/client";
-import { type Commision, type Milestone } from "src/utils/supabase/types";
+import { type commission, type Milestone } from "src/utils/supabase/types";
 
-export const commisionRouter = createTRPCRouter({
-  createCommision: publicProcedure
+export const commissionRouter = createTRPCRouter({
+  createcommission: publicProcedure
     .input(
       z.object({
-        commision: z.custom<Commision>(),
+        commission: z.custom<commission>(),
       }),
     )
     .query(async ({ input }) => {
       const supabase = createClient();
       const { error } = await supabase
-        .from("commisions")
-        .insert(input.commision);
+        .from("commissions")
+        .insert(input.commission);
 
       return { error };
     }),
 
-  getCommision: publicProcedure
+  getcommission: publicProcedure
     .input(
       z.object({
-        commisionID: z.string(),
+        commissionID: z.string(),
       }),
     )
     .query(async ({ input }) => {
       const supabase = createClient();
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { data, error } = await supabase
-        .from("commisions")
+        .from("commissions")
         .select(`*`)
-        .eq("id", input.commisionID)
+        .eq("id", input.commissionID)
         .single();
-      return { commision: data as Commision, error };
+      return { commission: data as commission, error };
     }),
 
   getMilestones: publicProcedure
     .input(
       z.object({
-        commisionID: z.string(),
+        commissionID: z.string(),
       }),
     )
     .query(async ({ input }) => {
@@ -49,7 +49,7 @@ export const commisionRouter = createTRPCRouter({
       const { data, error } = await supabase
         .from("milestones")
         .select(`*`)
-        .eq("commission_id", input.commisionID);
+        .eq("commission_id", input.commissionID);
 
       const milestones = data as Milestone[];
       milestones.sort((a, b) => {
@@ -61,40 +61,40 @@ export const commisionRouter = createTRPCRouter({
   getCommissionAndMilestones: publicProcedure
     .input(
       z.object({
-        commisionID: z.string(),
+        commissionID: z.string(),
       }),
     )
     .query(async ({ input }) => {
       const supabase = createClient();
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { data, error } = await supabase
-        .from("commisions")
+        .from("commissions")
         .select(`*`)
-        .eq("id", input.commisionID)
+        .eq("id", input.commissionID)
         .single();
 
       if (!!error) {
-        return { commision: null, milestones: null, error };
+        return { commission: null, milestones: null, error };
       }
 
       const { data: milestonesData, error: milestonesError } = await supabase
         .from("milestones")
         .select(`*`)
-        .eq("commission_id", input.commisionID);
+        .eq("commission_id", input.commissionID);
 
       const milestones = milestonesData as Milestone[];
       return {
-        commision: data as Commision,
+        commission: data as commission,
         milestones: milestones,
         milestonesError,
       };
     }),
 
-  updateCommision: publicProcedure
+  updatecommission: publicProcedure
     .input(
       z.object({
-        commisionID: z.string(),
-        commision: z.object({
+        commissionID: z.string(),
+        commission: z.object({
           artist_id: z.string().nullable(),
           created_at: z.string().nullable(),
           id: z.string().nullable(),
@@ -122,26 +122,26 @@ export const commisionRouter = createTRPCRouter({
       // Prepare the update data for the commission
       const updateData: Record<string, string | number> = {};
 
-      if (input.commision.artist_id !== null)
-        updateData.artist_id = input.commision.artist_id;
-      if (input.commision.created_at !== null)
-        updateData.created_at = input.commision.created_at;
-      if (input.commision.id !== null) updateData.id = input.commision.id;
-      if (input.commision.price !== null)
-        updateData.price = input.commision.price;
-      if (input.commision.work_id !== null)
-        updateData.work_id = input.commision.work_id;
+      if (input.commission.artist_id !== null)
+        updateData.artist_id = input.commission.artist_id;
+      if (input.commission.created_at !== null)
+        updateData.created_at = input.commission.created_at;
+      if (input.commission.id !== null) updateData.id = input.commission.id;
+      if (input.commission.price !== null)
+        updateData.price = input.commission.price;
+      if (input.commission.work_id !== null)
+        updateData.work_id = input.commission.work_id;
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const { data: commisionData, error: commissionError } = await supabase
+      const { data: commissionData, error: commissionError } = await supabase
         .from("commissions")
         .update(updateData)
-        .eq("commission_id", input.commisionID)
+        .eq("commission_id", input.commissionID)
         .select()
         .single();
 
       if (commissionError) {
-        return { commision: null, milesones: null, error: commissionError };
+        return { commission: null, milesones: null, error: commissionError };
       }
 
       // Prepare update data for milestones
@@ -175,7 +175,7 @@ export const commisionRouter = createTRPCRouter({
               .from("milestones")
               .update(milestoneUpdateData)
               .eq("id", milestone.id) // Assuming milestone ID is provided
-              .eq("commission_id", input.commisionID) // Ensure this milestone matches the commission ID
+              .eq("commission_id", input.commissionID) // Ensure this milestone matches the commission ID
               .select();
             if (error) {
               milestoneUpdateErrors.push(error);
@@ -188,14 +188,14 @@ export const commisionRouter = createTRPCRouter({
 
       if (milestoneUpdateErrors.length > 0) {
         return {
-          commision: commisionData as Commision,
+          commission: commissionData as commission,
           milesones: milestoneData,
           error: milestoneUpdateErrors,
         };
       }
 
       return {
-        commision: commisionData as Commision,
+        commission: commissionData as commission,
         milesones: milestoneData,
         error: null,
       };

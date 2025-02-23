@@ -1,6 +1,6 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { stripeRouter } from "./routers/stripe/stripe";
-import { commisionRouter } from "./routers/commsion";
+import { commissionRouter } from "./routers/commsion";
 import { artistRouter } from "./routers/artist";
 import { workRouter } from "./routers/work";
 import { accountRouter } from "./routers/account";
@@ -12,7 +12,7 @@ import { accountRouter } from "./routers/account";
  */
 export const appRouter = createTRPCRouter({
   stripe: stripeRouter,
-  commision: commisionRouter,
+  commission: commissionRouter,
   artist: artistRouter,
   work: workRouter,
   account: accountRouter,

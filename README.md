@@ -13,6 +13,7 @@
 - [ ] Design System
 
 ## Pages:
+
 - [ ] Search Page (finding art and artists)
   - [ ] Keyword Search Bar: Enter subject, artist, or style.
   - [ ] Filters:
@@ -22,11 +23,11 @@
     - [ ] Price/Commission Range
   - [ ] Sorting Options: By popularity, newest, or relevance.
 - [ ] Artists Page (viewing an artists work + ability to commison)
-- [ ] Commisions page
+- [ ] commissions page
   - [ ] User
-    - [ ] Before Purchase (The ability to commission art, mood board, set up commision rules)
-    - [ ] After Purchase (Review stages of the commision)
+    - [ ] Before Purchase (The ability to commission art, mood board, set up commission rules)
+    - [ ] After Purchase (Review stages of the commission)
   - [ ] Artist
-    - Before Purcahse (The ability to review art, communicate with the commisioner ask follow up questions, approve commission)
-    - After Purchase (Send in progress pictures, Hit and cross of commision milestones)
+    - Before Purcahse (The ability to review art, communicate with the commissioner ask follow up questions, approve commission)
+    - After Purchase (Send in progress pictures, Hit and cross of commission milestones)
 - [ ] Payments page (View past purchases and current commissions in work)

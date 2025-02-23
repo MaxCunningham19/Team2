@@ -9,10 +9,10 @@ export default async function Page({
 }) {
   const id = (await params).id;
 
-  const { commision, milestones, error } =
-    await api.commision.getCommissionAndMilestones({ commisionID: id });
+  const { commission, milestones, error } =
+    await api.commission.getCommissionAndMilestones({ commissionID: id });
 
-  if (!!error || commision == null) {
+  if (!!error || commission == null) {
     return <div> </div>;
   }
 
@@ -20,8 +20,8 @@ export default async function Page({
 
   if (
     user == null ||
-    user.id != commision.user_id ||
-    artist?.id != commision.artist_id
+    user.id != commission.user_id ||
+    artist?.id != commission.artist_id
   ) {
     return <div></div>;
   }
@@ -33,13 +33,13 @@ export default async function Page({
 
   return (
     <Commission
-      price={commision.price ?? 0}
+      price={commission.price ?? 0}
       milestones={milestoneParams}
-      work_id={commision.work_id}
-      artist_id={commision.artist_id}
-      created_at={commision.created_at}
-      user_id={commision.user_id}
-      id={commision.id}
+      work_id={commission.work_id}
+      artist_id={commission.artist_id}
+      created_at={commission.created_at}
+      user_id={commission.user_id}
+      id={commission.id}
     />
   );
 }
