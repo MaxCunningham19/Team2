@@ -1,31 +1,30 @@
-import { MilestoneParams, Milestone } from "./milestone";
+import { type MilestoneParams, Milestone } from "./milestone";
 
 export const Commission = (props: {
-    price: number;
-    milestones: MilestoneParams[];
-    work_id: string;
-    artist_id: string;
-    created_at: string;
-    id: string;
-  }) => {
-    return (
+  price: number;
+  milestones: MilestoneParams[];
+  work_id: string | null;
+  artist_id: string;
+  created_at: string;
+  id: string;
+}) => {
+  return (
+    <div>
+      <div>{props.price}</div>
+
       <div>
-        <div>{props.price}</div>
-    
-        <div>
-          {props.milestones.map((milestone, index) => (
-            <Milestone key={index} {...milestone} />
-          ))}
-        </div>
-  
-        <div>{props.work_id}</div>
-  
-        <div>{props.artist_id}</div>
-  
-        <div>{props.created_at}</div>
-  
-        <div>{props.id}</div>
+        {props.milestones.map((milestone, index) => (
+          <Milestone key={index} {...milestone} />
+        ))}
       </div>
-    );
-  };
-  
+
+      <div>{props.work_id}</div>
+
+      <div>{props.artist_id}</div>
+
+      <div>{props.created_at}</div>
+
+      <div>{props.id}</div>
+    </div>
+  );
+};
