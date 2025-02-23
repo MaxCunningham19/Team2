@@ -104,12 +104,12 @@ export function CreateNewWorkDialog({ artistId }: { artistId: string }) {
           Create New Work
         </Button>
       </DialogTrigger>
-      <DialogHeader>
-        <DialogTitle>Create New Work</DialogTitle>
-        <DialogDescription>
-        </DialogDescription>
-      </DialogHeader>
       <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create New Work</DialogTitle>
+          <DialogDescription>
+          </DialogDescription>
+        </DialogHeader>
         <ScrollArea className="h-[80vh]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-4">
