@@ -27,7 +27,7 @@ import {
 
 export default function NewCommission() {
   const { artist } = useParams();
-  const [user, setUser] = useState<null | string>(null);
+  const [user, setUser] = useState<null | string | undefined>(null);
   const [price, setPrice] = useState(0);
   const [desc, setDesc] = useState("");
 
@@ -45,9 +45,8 @@ export default function NewCommission() {
   }, []);
 
   // Handle redirect if user is not fetched
-  if (user === null) {
+  if (user === undefined) {
     redirect("/login");
-    return null; // or loading state if needed
   }
 
   return (
