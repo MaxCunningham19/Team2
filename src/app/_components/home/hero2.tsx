@@ -2,6 +2,7 @@
 import Image from "next/image";
 import PearlEarring from "../../../../public/pearl-earring.jpg"
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const HomeHero2 = () => {
   return (
@@ -11,7 +12,9 @@ const HomeHero2 = () => {
           a marketplace for artists and art connoisseurs
         </h1>
         <div className="flex flex-row gap-4 pt-6">
-          <Button>Explore</Button>
+          <Link href={"/explore"}>
+            <Button>Explore</Button>
+          </Link>
           <Button>Commission</Button>
           <Button>Sell</Button>
         </div>

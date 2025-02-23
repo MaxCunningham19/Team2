@@ -54,14 +54,8 @@ export default function Page() {
 
   return (
     <main className="container mx-auto px-4 py-8">
-      {/* Logo */}
-      <Link href="/" className="mb-12 inline-block">
-        <h1 className="font-serif text-4xl text-primary">novanti</h1>
-      </Link>
-
-      {/* Search Section */}
-      <div className="mb-12 space-y-6">
-        <h2 className="font-serif text-6xl text-foreground">Search</h2>
+      <div className="mb-12 mt-32 space-y-6">
+        <h2 className="font-serif text-7xl text-foreground">Explore</h2>
 
         <div className="space-y-4">
           <input
@@ -117,11 +111,10 @@ export default function Page() {
               <Link
                 href="#"
                 ref={(el) => (navRefs.current[index] = el)}
-                className={`inline-block pb-2 text-lg ${
-                  index === activeNavItem
-                    ? "text-foreground"
-                    : "text-primary transition-colors hover:text-foreground"
-                }`}
+                className={`${index === activeNavItem ? "text-foreground" :
+                  "text-primary hover:text-foreground"
+                  } inline-block pb-2 text-lg
+                  transition-colors`}
                 onClick={() => setActiveNavItem(index)}
               >
                 {item}

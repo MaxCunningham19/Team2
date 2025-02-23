@@ -1,18 +1,12 @@
-import Image from "next/image";
-import PearlEarring from "../../../../public/pearl-earring.jpg";
-import { Button } from "~/app/_components/ui/button";
-import { ArtCard } from "~/app/_components/art-card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { CreateNewWorkDialog } from "~/app/_components/artist-page/create-new-work-dialog";
-import { EditProfileDialog } from "~/app/_components/artist-page/edit-profile-dialog";
 import { api } from "~/trpc/server";
+import Image from "next/image"
+import PearlEarring from "../../../../public/pearl-earring.jpg"
+import { Button } from "~/app/_components/ui/button"
+import { ArtCard } from "~/app/_components/art-card"
+
+import { CreateNewWorkDialog } from "~/app/_components/artist-page/create-new-work-dialog"
+import { EditProfileDialog } from "~/app/_components/artist-page/edit-profile-dialog";
+
 
 export default async function Page({
   params,
