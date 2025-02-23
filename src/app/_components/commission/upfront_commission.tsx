@@ -26,13 +26,10 @@ export const upfrontMilestones = function (price: number) {
 };
 
 export const UpfrontCommission = (props: UpfrontCommission) => {
-
-  let price = props.price || 0;
-
   return (
     <Commission
-      price={price}
-      milestones={upfrontMilestones(price)}
+      price={props.price}
+      milestones={upfrontMilestones(props.price)}
       artist_id={props.artist_id}
       user_id={props.user_id}
       id={""}

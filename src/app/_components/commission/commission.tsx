@@ -12,7 +12,7 @@ export interface CommissionProps {
 
 export const Commission = (props: CommissionProps) => {
   return (
-    <div className="relative">
+    <div className="relative align-middle">
       <div className="space-y-12">
         {props.milestones.map((milestone, index) => (
           <Milestone
