@@ -31,7 +31,7 @@ type Filter = {
 
 const navItems = ["All works", "Curated", "Featured"];
 
-export default function Page() {
+export default function ExplorePage() {
   const [selectedFilters, setSelectedFilters] = useState<Filter[]>([]);
   const [activeNavItem, setActiveNavItem] = useState(0);
   const [underlineStyle, setUnderlineStyle] = useState({});
@@ -130,11 +130,10 @@ export default function Page() {
                 ref={(el) => {
                   navRefs.current[index] = el;
                 }}
-                className={`${
-                  index === activeNavItem
+                className={`${index === activeNavItem
                     ? "text-foreground"
                     : "text-primary hover:text-foreground"
-                } inline-block pb-2 text-lg transition-colors`}
+                  } inline-block pb-2 text-lg transition-colors`}
                 onClick={() => setActiveNavItem(index)}
               >
                 {item}
