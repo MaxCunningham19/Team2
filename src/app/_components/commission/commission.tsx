@@ -5,6 +5,7 @@ export const Commission = (props: {
   milestones: MilestoneParams[];
   work_id: string | null;
   artist_id: string;
+  user_id: string;
   created_at: string;
   id: string;
 }) => {
