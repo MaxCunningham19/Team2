@@ -18,7 +18,6 @@ import { createCommission } from "./action";
 export default function NewCommission() {
   // artist id from the url
   const { artist } = useParams();
-  const supabase = createClient();
 
   const [price, setPrice] = useState(0);
   const [desc, setDesc] = useState("");
