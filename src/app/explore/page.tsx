@@ -124,11 +124,6 @@ export default function Page() {
                     ? "text-foreground"
                     : "text-primary hover:text-foreground"
                 } inline-block pb-2 text-lg transition-colors`}
-                className={`${
-                  index === activeNavItem
-                    ? "text-foreground"
-                    : "text-primary hover:text-foreground"
-                } inline-block pb-2 text-lg transition-colors`}
                 onClick={() => setActiveNavItem(index)}
               >
                 {item}
