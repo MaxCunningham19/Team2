@@ -5,16 +5,18 @@ import { redirect } from "next/navigation";
 import { createClient } from "~/utils/supabase/server";
 import { api } from "~/trpc/server";
 
+const extractFormData = (formData: FormData) => ({
+  email: formData.get("email") as string,
+  password: formData.get("password") as string,
+  fullName: formData.get("fullName") as string,
+  accountType: formData.get("accountType") as string,
+});
+
 export async function login(formData: FormData) {
   const supabase = await createClient();
+  const { email, password } = extractFormData(formData);
 
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
-
-  const { error } = await supabase.auth.signInWithPassword(data);
-
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
     console.error("Login error:", error);
   }
@@ -24,55 +26,69 @@ export async function login(formData: FormData) {
 
 export async function signup(formData: FormData) {
   const supabase = await createClient();
+  const { email, password, fullName, accountType } = extractFormData(formData);
 
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+    email,
+    password,
+  });
 
-  const userInfo = await supabase.auth.signUp(data);
-
-  if (userInfo.error) {
-    console.error("Signup error:", userInfo.error);
+  if (signUpError) {
+    console.error("Signup error:", signUpError);
     redirect("/error");
   }
 
-  const user = userInfo.data.user;
-
+  const user = signUpData.user;
   let artistId = null;
-  if (formData.get("accountType") === "artist") {
+
+  if (accountType === "artist") {
     const accountData = await api.stripe.account.account();
     if (!accountData) {
       console.error("Artist account creation error: No account data");
-      redirect("/error");
+      // Optionally handle or redirect on error here.
+    } else {
+      const { error: artistInsertError } = await supabase
+        .from("artists")
+        .insert({
+          display_name: fullName,
+          stripe_connected_account_id: accountData.account,
+        });
+
+      if (artistInsertError) {
+        console.error("Artist account creation error:", artistInsertError);
+        // Optionally handle or redirect on error here.
+      } else {
+        const { data: artist, error: artistSelectError } = await supabase
+          .from("artists")
+          .select("id")
+          .eq("stripe_connected_account_id", accountData.account)
+          .single();
+
+        if (artistSelectError) {
+          console.error("Error fetching artist ID:", artistSelectError);
+        } else {
+          artistId = artist.id;
+        }
+      }
     }
-
-    const { error } = await supabase.from("artists").insert({
-      user_id: user?.id,
-      display_name: formData.get("fullName") as string,
-      stripe_connected_account_id: accountData.account,
-    });
-
-    if (error) {
-      console.error("Artist account creation error:", error);
-      redirect("/error");
-    }
-
-    artistId = await supabase.from("artists").select("id").eq("user_id", user?.id).single();
   }
 
   const customerData = await api.stripe.customer.create_customer({
-    email: data.email,
+    email,
     phone: "",
   });
 
-  const { error } = await supabase.from("users").upsert({
+  const { error: userUpsertError } = await supabase.from("users").upsert({
     id: user?.id,
-    full_name: formData.get("fullName") as string,
+    full_name: fullName,
     artist_id: artistId,
     stripe_customer_id: customerData.customerID,
   });
 
+  if (userUpsertError) {
+    console.error("User upsert error:", userUpsertError);
+  }
+
   revalidatePath("/", "layout");
-  return { nextpage: "/", error };
+  return { nextpage: "/", error: userUpsertError };
 }
