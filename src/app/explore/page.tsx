@@ -1,10 +1,8 @@
 "use client";
 import Image from "next/image";
-
 import Link from "next/link";
 import { X, Plus, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { WorkCard } from "../_components/work/work-card";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
@@ -38,8 +36,12 @@ export default function Page() {
   const [underlineStyle, setUnderlineStyle] = useState({});
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
+  // 1. State for selected work (for the modal)
+  const [selectedWork, setSelectedWork] = useState<Work | null>(null);
+
   const { data: allWorksData, isSuccess } = api.work.getAllWorks.useQuery();
 
+  // Add or remove filters
   const addFilter = (category: string, value: string) => {
     setSelectedFilters((prev) => [...prev, { category, value }]);
   };
@@ -48,6 +50,7 @@ export default function Page() {
     setSelectedFilters((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // For the nav underline
   useEffect(() => {
     const activeNav = navRefs.current[activeNavItem];
     if (activeNav) {
@@ -57,6 +60,15 @@ export default function Page() {
       });
     }
   }, [activeNavItem]);
+
+  // 2. Handlers to open/close modal
+  const handleCardClick = (work: Work) => {
+    setSelectedWork(work);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedWork(null);
+  };
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -143,7 +155,8 @@ export default function Page() {
           allWorksData?.map((work) => (
             <Card
               key={work.id}
-              className="w-full max-w-md overflow-hidden bg-[#fbfbfb]"
+              className="w-full max-w-md cursor-pointer overflow-hidden bg-[#fbfbfb]"
+              onClick={() => handleCardClick(work)} // 3. Open the modal on click
             >
               <CardContent className="p-0">
                 <Image
@@ -163,6 +176,35 @@ export default function Page() {
             </Card>
           ))}
       </div>
+
+      {/* 4. Modal for Expanded View */}
+      {selectedWork && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-lg rounded-md bg-white p-6">
+            <button
+              className="float-right mb-2 inline-block rounded bg-gray-200 px-2 py-1 text-sm hover:bg-gray-300"
+              onClick={handleCloseModal}
+            >
+              Close
+            </button>
+            <div className="mt-8">
+              <h2 className="mb-2 text-2xl font-bold">{selectedWork.title}</h2>
+              <p className="mb-4 text-gray-700">{selectedWork.desc}</p>
+              <Image
+                src={selectedWork.image_url}
+                alt="Expanded Artwork"
+                width={600}
+                height={400}
+                className="mb-4 w-full object-cover"
+              />
+              {/* Example buy button */}
+              <Button className="mt-2" variant="default">
+                Buy Now
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
