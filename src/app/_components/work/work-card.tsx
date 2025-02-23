@@ -1,10 +1,12 @@
-export const WorkCard = (props: {
+export interface WorkCardProps {
   title: string;
   artist: { artistID: string; artistName: string };
   display_url: string;
   price: number;
   desc: string;
-}) => {
+}
+
+export const WorkCard = (props: WorkCardProps) => {
   return (
     <div>
       <div>{props.title}</div>

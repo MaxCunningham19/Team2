@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { X, Plus, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { WorkCard } from "../_components/work/work-card"; 
 
 import {
   DropdownMenu,
@@ -14,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "~/app/_components/ui/dropdown-menu";
 import { Button } from "../_components/ui/button";
+import { Work } from "~/utils/supabase/types";
 
 // Filter categories and options
 const filterOptions = {
@@ -35,6 +38,9 @@ export default function Page() {
   const [underlineStyle, setUnderlineStyle] = useState({});
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
+  const supabase = createClient();
+  const [works, setWorks] = useState<Work[]>([]);
+
   const addFilter = (category: string, value: string) => {
     setSelectedFilters((prev) => [...prev, { category, value }]);
   };
@@ -52,6 +58,21 @@ export default function Page() {
       });
     }
   }, [activeNavItem]);
+
+  useEffect(() => {
+    async function fetchWorks() {
+      const { data: works, error: artistSelectError } = await supabase.from("works").select("*");
+
+      if (artistSelectError) {
+        console.error(artistSelectError);
+        return;
+      }
+      
+      setWorks(works as Work[]);
+    }
+
+    fetchWorks();
+  });
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -133,9 +154,9 @@ export default function Page() {
 
       {/* Gallery Grid */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3].map((item) => (
+        {works.map((work) => (
           <Link
-            key={item}
+            key={work.id}
             href="#"
             className="group overflow-hidden rounded-lg bg-secondary/50 transition-shadow hover:shadow-lg"
           >
@@ -148,7 +169,7 @@ export default function Page() {
             />
             <div className="p-4">
               <h3 className="font-serif text-xl text-foreground transition-colors group-hover:text-primary">
-                The Great Wave of Kanagawa
+                {work.title}
               </h3>
             </div>
           </Link>
