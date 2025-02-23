@@ -14,7 +14,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="container fixed top-0 z-[5] mx-auto px-4 pt-8">
+    <header className="container fixed top-0 z-[5] left-1/2 transform -translate-x-1/2 px-4 pt-8">
       <div className="flex flex-col items-center gap-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
