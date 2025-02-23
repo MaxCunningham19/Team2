@@ -25,7 +25,7 @@ export default function Milestone(props: MilestoneProps): ReactNode {
         <div className="flex-grow ml-4 sm:ml-6">
           <h3 className="text-lg font-medium text-gray-900">{props.title}</h3>
           <p className="mt-1 text-sm text-gray-500">{props.desc}</p>
-          <p className="mt-1 text-sm font-semibold text-primary">{props.amount}</p>
+          <p className="mt-1 text-sm font-semibold text-primary">€{props.amount}</p>
         </div>
       </div>
       {!props.isLast && <div className="absolute top-12 left-6 -ml-px w-0.5 h-full bg-gray-300"></div>}

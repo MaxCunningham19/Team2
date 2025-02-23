@@ -1,5 +1,6 @@
 import Image from "next/image"
 import PearlEarring from "../../../../../public/pearl-earring.jpg"
+import { ThreeStepCommission } from "../three-step-commission"
 
 export const ProgressView = () => {
   return (
@@ -14,6 +15,10 @@ export const ProgressView = () => {
             <span className="text-accent/80">In Progress - Stage 2/3 </span>
           </h3>
         </div>
+      </div>
+
+      <div className="my-auto">
+        <ThreeStepCommission price={5000} artist_id={"asdf"} user_id={"who knows"} />
       </div>
     </div>
   )

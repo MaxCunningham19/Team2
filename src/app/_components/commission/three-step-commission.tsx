@@ -7,7 +7,7 @@ export interface UpfrontCommission {
   user_id: string;
 }
 
-export const threeStepMilestones = function (price: number) {
+export const threeStepMilestones = function(price: number) {
   return [
     {
       amount: price / 2,
