@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { createClient } from "@/utils/supabase/server";
 
-export const commisionRouter = createTRPCRouter({
+export const artistRouter = createTRPCRouter({
   getArtistID: publicProcedure.query(async () => {
     const supabase = await createClient();
     const {
