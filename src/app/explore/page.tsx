@@ -141,25 +141,26 @@ export default function Page() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {isSuccess &&
           allWorksData?.map((work) => (
-            <Link
+            <Card
               key={work.id}
-              href={`/work/${work.id}`}
-              className="group overflow-hidden rounded-lg bg-secondary transition-shadow hover:shadow-lg"
+              className="w-full max-w-md overflow-hidden bg-[#fbfbfb]"
             >
-              <Image
-                src={work.image_url}
-                alt="Photograph of the artwork."
-                width={400}
-                height={300}
-                className="aspect-4/3 w-full object-cover"
-              />
-              <div className="p-4">
-                <h3 className="font-serif text-xl font-bold text-foreground transition-colors group-hover:text-primary">
-                  {work.title}
-                </h3>
-                <p>{work.desc}</p>
-              </div>
-            </Link>
+              <CardContent className="p-0">
+                <Image
+                  src={work.image_url}
+                  alt="Photograph of the artwork."
+                  width={400}
+                  height={300}
+                  className="aspect-4/3 w-full object-cover"
+                />
+                <div className="space-y-2 p-6">
+                  <h2 className="font-serif text-2xl text-[#000000]">
+                    {work.title}
+                  </h2>
+                  <p className="text-[#a88a7c]">{work.desc}</p>
+                </div>
+              </CardContent>
+            </Card>
           ))}
       </div>
     </main>
