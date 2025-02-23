@@ -12,3 +12,8 @@ export const createCommission = async function (params: {
     });
   return { commissionID, milestoneIDs, error };
 };
+
+export const getUser = async function () {
+  const { user } = await api.account.getUserAndArtist();
+  return user;
+};

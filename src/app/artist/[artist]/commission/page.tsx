@@ -1,6 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
-import { createClient } from "~/utils/supabase/client";
+import { redirect, useParams } from "next/navigation";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,14 +12,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { createCommission } from "./action";
+import { createCommission, getUser } from "./action";
+import { UpfrontCommission } from "@/components/commission/upfront_commission";
+import { FifteyFifteyCommission } from "@/components/commission/fiftey-fiftey-commission";
+import { ThreeStepCommission } from "@/components/commission/three-step-commission";
+import { type User } from "~/utils/supabase/types";
 
 export default function NewCommission() {
   // artist id from the url
   const { artist } = useParams();
+  void getUser().then((user) => {
+    setUser(user);
+  });
 
+  const [user, setUser] = useState<undefined | null | User>(undefined);
   const [price, setPrice] = useState(0);
   const [desc, setDesc] = useState("");
+
+  if (user == null) {
+    redirect("/signup");
+  }
+  // todo add in button handling for selecting your milestones
 
   return (
     <Card className="mx-auto w-full max-w-md p-4">
@@ -50,18 +62,41 @@ export default function NewCommission() {
             min="0"
           />
         </div>
-        <Button
-          className="w-full"
-          onClick={async () => {
-            await createCommission({
-              artist_id: artist as string,
-              price: price,
-              desc: desc,
-            });
-          }}
-        >
-          Submit
-        </Button>
+        <span>
+          <Button
+            onClick={() => {
+              return;
+            }}
+          >
+            <UpfrontCommission
+              price={price}
+              artist_id={artist as string}
+              user_id={user?.artist_id ?? ""}
+            />
+          </Button>
+          <Button
+            onClick={() => {
+              return;
+            }}
+          >
+            <FifteyFifteyCommission
+              price={price}
+              artist_id={artist as string}
+              user_id={user?.artist_id ?? ""}
+            />
+          </Button>
+          <Button
+            onClick={() => {
+              return;
+            }}
+          >
+            <ThreeStepCommission
+              price={price}
+              artist_id={artist as string}
+              user_id={user?.artist_id ?? ""}
+            />
+          </Button>
+        </span>
       </CardContent>
     </Card>
   );

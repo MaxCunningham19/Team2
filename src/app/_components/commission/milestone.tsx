@@ -8,8 +8,8 @@ export interface MilestoneProps {
   content_url: string | null;
   title: string;
   desc: string;
-  order_id: number;
-  id: string;
+  order_id?: number;
+  id?: string;
   isLast: boolean;
 }
 
