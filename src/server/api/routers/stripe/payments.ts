@@ -5,6 +5,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 import { TRPCError } from "@trpc/server";
 import { stripe } from "./stripe";
+import Stripe from "stripe";
 
 export const paymentsRouter = createTRPCRouter({
   createDirectPayment: publicProcedure // direct payment to purchase artwork
@@ -81,6 +82,59 @@ export const paymentsRouter = createTRPCRouter({
       return {
         sessionId: session?.id,
         session_client_secret: session.client_secret,
+      };
+    }),
+  paymentSheet: publicProcedure
+    .input(
+      z.object({
+        stripeCustomerId: z.string(),
+        amountInCent: z.number(),
+        artistStripeID: z.string(),
+        maxApplicationFeeInCent: z.number(),
+        applicationFeePercentage: z.number(),
+      }),
+    )
+    .query(async ({ input }) => {
+      let customer: Stripe.Customer;
+      if (input.stripeCustomerId != null) {
+        const tmpCustomer = await stripe.customers.retrieve(
+          input.stripeCustomerId,
+        );
+        if (tmpCustomer.deleted) {
+          return { error: "error" };
+        }
+        customer = tmpCustomer;
+      } else {
+        customer = await stripe.customers.create();
+      }
+      const ephemeralKey = await stripe.ephemeralKeys.create(
+        { customer: customer.id },
+        { apiVersion: "2025-01-27.acacia" },
+      );
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: input.amountInCent,
+        currency: "eur",
+        customer: customer.id,
+        // In the latest version of the API, specifying the `automatic_payment_methods` parameter
+        // is optional because Stripe enables its functionality by default.
+        automatic_payment_methods: {
+          enabled: false,
+        },
+        payment_method_types: ["card"],
+        application_fee_amount: min(
+          input.maxApplicationFeeInCent,
+          input.amountInCent * input.applicationFeePercentage,
+        ),
+        transfer_data: {
+          destination: input.artistStripeID,
+        },
+      });
+
+      return {
+        paymentIntent: paymentIntent.client_secret,
+        ephemeralKey: ephemeralKey.secret,
+        customer: customer.id,
+        publishableKey: process.env.STRIPE_TEST_PUBLIC_KEY,
       };
     }),
 });
