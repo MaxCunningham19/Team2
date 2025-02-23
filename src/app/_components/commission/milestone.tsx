@@ -3,7 +3,6 @@ export const Milestone = (props: {
   approved: boolean | null;
   artist_notes: string | null;
   buyer_notes: string | null;
-  commission_id: string | null;
   completed: boolean;
   content_url: string | null;
   desc: string;
@@ -17,12 +16,11 @@ export const Milestone = (props: {
 
       <div>{props.artist_notes}</div>
 
-      <a href={`/artist/${props.artist.artistID}`}> {props.artist.artistID}</a>
+      <div>{props.buyer_notes}</div>
 
-      <div>{props.display_url}</div>
+      <div>{props.completed}</div>
 
-      <div>{props.price}</div>
-
+      <div>{content_url}</div>
       <div>{props.desc}</div>
     </div>
   );
