@@ -133,7 +133,7 @@ Return the output as JSON in the following format:
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-4 m-40 bg-gray-100 rounded-lg">
         <div className="grid gap-2 md:grid-cols-2">
           <Card>
             <CardHeader>
