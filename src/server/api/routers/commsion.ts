@@ -87,7 +87,11 @@ export const commisionRouter = createTRPCRouter({
         .eq("commission_id", input.commisionID);
 
       const milestones = milestonesData as Milestone[];
-      return { commision: data as Commision, milestones: milestones, error };
+      return {
+        commision: data as Commision,
+        milestones: milestones,
+        milestonesError,
+      };
     }),
 
   updateCommision: publicProcedure
