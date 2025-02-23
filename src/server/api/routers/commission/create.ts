@@ -7,7 +7,6 @@ import {
   type MilestoneInsert,
   type commissionInsert,
 } from "~/utils/supabase/types";
-import { Milestone } from "lucide-react";
 
 export const createRouter = createTRPCRouter({
   commission: publicProcedure
@@ -47,48 +46,13 @@ export const createRouter = createTRPCRouter({
         ...milestone,
         commission_id: commissionID.id as string, // Add commission ID to each milestone
       }));
+
+      milestonesWithCommissionId.sort((a, b) => {
+        return a.order_id - b.order_id;
+      });
       const { data: milestoneIDs, error: milesoneError } = await supabase
         .from("milestones")
         .insert([milestonesWithCommissionId])
-        .select("id");
-
-      if (!!error) {
-        const { error: deleteError } = await supabase
-          .from("commission")
-          .delete()
-          .eq("id", commissionID);
-
-        return { error: milesoneError, deletedError: deleteError };
-      }
-
-      return {
-        commissionID: commissionID.id as string,
-        milestoneIDs: milestoneIDs as string[] | null,
-      };
-    }),
-
-  milestone: publicProcedure
-    .input(
-      z.object({
-        commissionID: z.string(),
-        milestone: z.custom<MilestoneInsert>(),
-      }),
-    )
-    .query(async ({ input }) => {
-      const supabase = createClient();
-
-      const commissionkeys = new Map<string, unknown>();
-
-      const { data: commissionID, error } = await supabase
-        .from("commission")
-        .select("*")
-        .eq("id")
-        .single();
-
-      milestone = { ...milestone, commission_id: commissionID };
-      const { data: milestoneIDs, error: milesoneError } = await supabase
-        .from("milestones")
-        .insert([milestone])
         .select("id");
 
       if (!!error) {

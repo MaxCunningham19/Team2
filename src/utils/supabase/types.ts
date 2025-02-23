@@ -87,7 +87,7 @@ export type MilestoneUpdate = {
   completed?: boolean;
   content_url?: string | null;
   desc?: string;
-  id?: string;
+  id: string;
   order_id?: number;
 };
 
