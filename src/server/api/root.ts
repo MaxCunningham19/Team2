@@ -1,6 +1,6 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { stripeRouter } from "./routers/stripe/stripe";
-import { commissionRouter } from "./routers/commission";
+import { commissionRouter } from "./routers/commission/commssion";
 import { artistRouter } from "./routers/artist";
 import { workRouter } from "./routers/work";
 import { accountRouter } from "./routers/account";

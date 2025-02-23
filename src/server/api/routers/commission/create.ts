@@ -61,7 +61,7 @@ export const createRouter = createTRPCRouter({
           .delete()
           .eq("id", commissionID);
 
-        return { error: milesoneError, deletedError: deleteError };
+        return { error: milesoneError, deleted: !deleteError };
       }
 
       return {
