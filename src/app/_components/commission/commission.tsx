@@ -1,5 +1,8 @@
-export const Milestone = (props: {
+import { MilestoneParams, Milestone } from "./milestone";
+
+export const Commission = (props: {
     price: number;
+    milestones: MilestoneParams[];
     work_id: string;
     artist_id: string;
     created_at: string;
@@ -8,6 +11,12 @@ export const Milestone = (props: {
     return (
       <div>
         <div>{props.price}</div>
+    
+        <div>
+          {props.milestones.map((milestone, index) => (
+            <Milestone key={index} {...milestone} />
+          ))}
+        </div>
   
         <div>{props.work_id}</div>
   
