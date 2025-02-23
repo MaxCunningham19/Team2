@@ -10,6 +10,7 @@ export default async function Page({
     await api.commision.getCommissionAndMilestones({ commisionID: id });
 
   if (!!error) {
+    return <div> </div>;
   }
 
   return <div></div>;
