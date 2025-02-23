@@ -35,9 +35,8 @@ export const uploadImage = async ({ file, bucket, folder }: UploadProps) => {
   }
 
   const imageUrl = `${process.env
-    .NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${bucket}/${
-    data?.path
-  }`;
+    .NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${bucket}/${data?.path
+    }`;
 
   return { imageUrl, error: "" };
 };

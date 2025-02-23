@@ -141,20 +141,21 @@ export default function Page() {
         {isSuccess && allWorksData?.map((work) => (
           <Link
             key={work.id}
-            href="#"
+            href={`/work/${work.id}`}
             className="group overflow-hidden rounded-lg bg-secondary/50 transition-shadow hover:shadow-lg"
           >
             <Image
-              src="/images/the-great-wave.jpeg"
-              alt="The Great Wave of Kanagawa"
+              src={work.image_url}
+              alt="Photograph of the artwork."
               width={400}
               height={300}
               className="aspect-4/3 w-full object-cover"
             />
             <div className="p-4">
-              <h3 className="font-serif text-xl text-foreground transition-colors group-hover:text-primary">
+              <h3 className="font-serif font-bold text-xl text-foreground transition-colors group-hover:text-primary">
                 {work.title}
               </h3>
+              <p>{work.desc}</p>
             </div>
           </Link>
         ))}
