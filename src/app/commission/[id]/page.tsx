@@ -1,6 +1,7 @@
 import { api } from "~/trpc/server";
 import { Commission } from "src/app/_components/commission/commission";
 import { type MilestoneProps } from "~/app/_components/commission/milestone";
+import { redirect } from "next/navigation";
 
 export default async function Page({
   params,
@@ -13,7 +14,7 @@ export default async function Page({
     await api.commission.getCommissionAndMilestones({ commissionID: id });
 
   if (!!error || commission == null) {
-    return <div> </div>;
+    redirect("/error");
   }
 
   const { user, artist } = await api.account.getUserAndArtist();
@@ -24,7 +25,7 @@ export default async function Page({
     artist?.id != commission.artist_id ||
     commission.price == null
   ) {
-    return <div></div>;
+    return <div>no</div>;
   }
 
   let milestoneProps: MilestoneProps[] = [];
