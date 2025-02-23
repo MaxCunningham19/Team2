@@ -20,12 +20,12 @@ const HomeHero2 = () => {
         <Image
           src={PearlEarring}
           alt="Girl with a pearl earring"
-          className="w-96 shadow-xl shadow-neutral-800/80"
+          className="w-96 shadow-xl shadow-neutral-800/80 rounded-sm"
         />
-        <div className="absolute bottom-4 left-4 w-64 bg-primary/80 p-2 text-primary-foreground">
+        <div className="absolute bottom-4 left-4 w-64 bg-primary/85 p-2 text-primary-foreground">
           <h3 className="font-bold text-lg">Girl with a Pearl Earring</h3>
           <h3>Johannes Vermeer</h3>
-          <h3 className="-mt-1 text-primary-foreground/80">c. 1665</h3>
+          <h3 className="-mt-1 text-primary-foreground/70">c. 1665</h3>
         </div>
       </div>
     </div>
