@@ -25,7 +25,7 @@ export default async function Page({
     artist?.id != commission.artist_id ||
     commission.price == null
   ) {
-    return <div>no</div>;
+    redirect("/error/no_access");
   }
 
   let milestoneProps: MilestoneProps[] = [];
