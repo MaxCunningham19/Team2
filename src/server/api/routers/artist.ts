@@ -30,7 +30,7 @@ export const artistRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const supabase = await createClient();
 
-      if (!!input.id) {
+      if (!input.id) {
         return { artist: null };
       }
 

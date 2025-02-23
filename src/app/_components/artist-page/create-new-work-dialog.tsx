@@ -24,7 +24,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Image from "next/image"
-import { useParams } from "next/navigation"
+import { convertBlobUrlToFile } from "~/lib/utils"
+import { uploadImage } from "~/utils/supabase/storage/client"
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -70,9 +71,31 @@ export function CreateNewWorkDialog({ artistId }: { artistId: string }) {
     if (file) {
       const url = URL.createObjectURL(file)
       setImageUrl(url)
-      form.setValue("imageUrl", url)
     }
   }
+
+  async function handleUpload() {
+    startTransition(async () => {
+      const imageFile = await convertBlobUrlToFile(imageUrl);
+
+      const { imageUrl: uploadedImageUrl, error } = await uploadImage({
+        file: imageFile,
+        bucket: "assets",
+      });
+
+      console.log("uploaded")
+
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      console.log(uploadedImageUrl)
+
+      form.setValue("imageUrl", uploadedImageUrl)
+    });
+  };
 
   return (
     <Dialog>
@@ -81,12 +104,12 @@ export function CreateNewWorkDialog({ artistId }: { artistId: string }) {
           Create New Work
         </Button>
       </DialogTrigger>
-      <DialogHeader>
-        <DialogTitle>Create New Work</DialogTitle>
-        <DialogDescription>
-        </DialogDescription>
-      </DialogHeader>
       <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create New Work</DialogTitle>
+          <DialogDescription>
+          </DialogDescription>
+        </DialogHeader>
         <ScrollArea className="h-[80vh]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-4">
@@ -132,11 +155,12 @@ export function CreateNewWorkDialog({ artistId }: { artistId: string }) {
               <FormField
                 control={form.control}
                 name="imageUrl"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel className="text-secondary-foreground">Upload Image</FormLabel>
                     <Input id="picture" type="file" onChange={handleFileChange} />
                     {imageUrl && <Image src={imageUrl} alt="Selected image" width={200} height={200} />}
+                    <Button onClick={handleUpload} disabled={!imageUrl || isPending}>Upload</Button>
                     <FormMessage />
                   </FormItem>
                 )}

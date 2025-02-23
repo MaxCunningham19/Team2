@@ -24,6 +24,7 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable}`}>
       <body>
         <TRPCReactProvider>
+          <Header />
           {children}
         </TRPCReactProvider>
       </body>
