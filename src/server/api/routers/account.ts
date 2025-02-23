@@ -38,4 +38,25 @@ export const accountRouter = createTRPCRouter({
 
     return { user: userData, artist: artist };
   }),
+
+  getArtist: publicProcedure
+    .input(z.object({ artist_id: z.string() }))
+    .query(async ({ input }) => {
+      const supabase = createClient();
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { data } = await supabase
+        .from("artists")
+        .select("*")
+        .eq("id", input.artist_id)
+        .single();
+
+      const artist = data as Artist | null;
+
+      if (artist == null) {
+        return { artist: null };
+      }
+
+      return { artist: artist };
+    }),
 });
