@@ -1,4 +1,6 @@
 "use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,14 +19,33 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { login, signup } from "./actions";
-import { useState } from "react";
-import { redirect } from "next/navigation";
 
 export default function LoginPage() {
     const [err, setErr] = useState<null | string>(null);
     const [isSignUp, setIsSignUp] = useState(false);
+    const [accountType, setAccountType] = useState(""); // Track selected value
+    const router = useRouter();
+
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+
+        // Manually append the accountType since it's not captured automatically
+        if (isSignUp) {
+            formData.append("accountType", accountType);
+        }
+
+        const action = isSignUp ? signup : login;
+        const { nextpage, error } = await action(formData);
+
+        if (error) {
+            setErr(error.message);
+        } else {
+            router.push(nextpage);
+        }
+    }
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -34,19 +55,19 @@ export default function LoginPage() {
                         {isSignUp ? "Sign up" : "Log in"}
                     </CardTitle>
                     {err && (
-                        <CardTitle className="text-s text-center font-semibold">
+                        <CardTitle className="text-sm text-center text-red-500 font-semibold">
                             {err}
                         </CardTitle>
                     )}
                 </CardHeader>
                 <CardContent>
-                    <form className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                         {isSignUp && (
                             <>
                                 <div className="space-y-2">
                                     <Label htmlFor="accountType">Account Type</Label>
-                                    <Select>
-                                        <SelectTrigger id="accountType" name="accountType" className="w-full">
+                                    <Select onValueChange={setAccountType}>
+                                        <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Select Account Type" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -88,33 +109,16 @@ export default function LoginPage() {
                             />
                         </div>
                         <CardFooter className="flex flex-col space-y-2">
-                            <Button
-                                formAction={async (formData) => {
-                                    const { nextpage, error } = await login(formData);
-                                    if (error !== null) {
-                                        setErr(error.message);
-                                    } else {
-                                        redirect(nextpage);
-                                    }
-                                }}
-                                className="w-full"
-                            >
-                                Log in
+                            <Button type="submit" className="w-full">
+                                {isSignUp ? "Sign up" : "Log in"}
                             </Button>
                             <Button
-                                formAction={async (formData) => {
-                                    const { nextpage, error } = await signup(formData);
-                                    if (error !== null) {
-                                        setErr(error.message);
-                                    } else {
-                                        redirect(nextpage);
-                                    }
-                                }}
+                                type="button"
                                 variant="outline"
                                 className="w-full"
-                                onClick={() => setIsSignUp(true)}
+                                onClick={() => setIsSignUp(!isSignUp)}
                             >
-                                Sign up
+                                {isSignUp ? "Switch to Log in" : "Switch to Sign up"}
                             </Button>
                         </CardFooter>
                     </form>

@@ -33,7 +33,6 @@ export const accountRouter = createTRPCRouter({
       }
     }),
   account: publicProcedure // create a new stripe account
-    .input(z.object({}))
     .query(async ({}) => {
       try {
         const account = await stripe.accounts.create({
