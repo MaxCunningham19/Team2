@@ -25,7 +25,6 @@ import {
   ThreeStepCommission,
   threeStepMilestones,
 } from "@/components/commission/three-step-commission";
-import { type User } from "~/utils/supabase/types";
 
 export default function NewCommission() {
   // artist id from the url
@@ -34,7 +33,7 @@ export default function NewCommission() {
     setUser(user);
   });
 
-  const [user, setUser] = useState<undefined | null | string>(undefined);
+  const [user, setUser] = useState<undefined | null | string>("");
   const [price, setPrice] = useState(0);
   const [desc, setDesc] = useState("");
 
@@ -71,7 +70,7 @@ export default function NewCommission() {
             min="0"
           />
         </div>
-        <span>
+        <div className="flex flex-auto items-start">
           <Button
             onClick={async () => {
               const { commissionID, milestoneIDs, error } =
@@ -129,7 +128,7 @@ export default function NewCommission() {
               user_id={user ?? ""}
             />
           </Button>
-        </span>
+        </div>
       </CardContent>
     </Card>
   );

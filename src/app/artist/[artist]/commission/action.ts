@@ -1,8 +1,10 @@
+"use server";
 import { createClient } from "@/utils/supabase/server";
 import {
   type CommissionInsert,
   type MilestoneInsert,
 } from "~/utils/supabase/types";
+
 export const createCommission = async function (params: {
   commission: CommissionInsert;
   milestones: MilestoneInsert[];
