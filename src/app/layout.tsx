@@ -4,6 +4,7 @@ import { Playfair_Display } from 'next/font/google'
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import Header from "./_components/header";
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -22,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <Header />
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );
