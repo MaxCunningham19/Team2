@@ -1,4 +1,4 @@
-export const Milestone = (props: {
+export type MilestoneParams = {
   amount: number;
   approved: boolean | null;
   artist_notes: string | null;
@@ -7,7 +7,9 @@ export const Milestone = (props: {
   content_url: string | null;
   desc: string;
   id: string;
-}) => {
+};
+
+export const Milestone = (props: MilestoneParams) => {
   return (
     <div>
       <div>{props.amount}</div>
