@@ -45,6 +45,20 @@ export const accountRouter = createTRPCRouter({
     return { userID: user.data.user?.id };
   }),
 
+  getUser: publicProcedure
+    .input(z.object({ userID: z.string() }))
+    .query(async ({ input }) => {
+      const supabase = createClient();
+
+      const userData = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", input.userID)
+        .single();
+      const user = userData.data as User;
+      return { user, error: userData.error };
+    }),
+
   getArtist: publicProcedure
     .input(z.object({ artist_id: z.string() }))
     .query(async ({ input }) => {
