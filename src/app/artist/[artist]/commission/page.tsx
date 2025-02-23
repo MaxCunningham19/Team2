@@ -13,9 +13,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { createCommission, getUser } from "./action";
-import { UpfrontCommission } from "@/components/commission/upfront_commission";
-import { FifteyFifteyCommission } from "@/components/commission/fiftey-fiftey-commission";
-import { ThreeStepCommission } from "@/components/commission/three-step-commission";
+import { UpfrontCommission, milestones } from "@/components/commission/upfront_commission";
+import { FifteyFifteyCommission, milestones } from "@/components/commission/fiftey-fiftey-commission";
+import { ThreeStepCommission, milestones } from "@/components/commission/three-step-commission";
 import { type User } from "~/utils/supabase/types";
 
 export default function NewCommission() {
@@ -64,7 +64,11 @@ export default function NewCommission() {
         </div>
         <span>
           <Button
-            onClick={() => {
+            onClick={async () => {
+              await createCommission({
+                commission: { price: price },
+                milestones: ,
+              });
               return;
             }}
           >

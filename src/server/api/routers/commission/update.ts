@@ -2,7 +2,11 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { createClient } from "@/utils/supabase/client";
-import { type Milestone, type MilestoneUpdate } from "src/utils/supabase/types";
+import {
+  Commission,
+  type Milestone,
+  type MilestoneUpdate,
+} from "src/utils/supabase/types";
 
 export const updateRouter = createTRPCRouter({
   milestone: publicProcedure
@@ -38,5 +42,62 @@ export const updateRouter = createTRPCRouter({
       }
 
       return { milestoneID: milestoneID.id as string };
+    }),
+
+  approveMilestone: publicProcedure
+    .input(
+      z.object({
+        milestone_id: z.string(),
+      }),
+    )
+    .query(async ({ input: { milestone_id } }) => {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user == null) {
+        return;
+      }
+
+      const { milestoneData, error } = await supabase
+        .from("milestones")
+        .select("*")
+        .eq("id", milestone_id)
+        .single();
+
+      if (!!error) {
+        return { error: error };
+      }
+
+      let milestone = milestoneData as Milestone;
+      const { commissionData, error: commissionError } = await supabase
+        .from("commissions")
+        .select("*")
+        .eq("id", milestone.commission_id)
+        .single();
+
+      if (!!commissionError) {
+        return { error: commissionError };
+      }
+      const commission = commissionData as Commission;
+
+      if (commission.user_id == user.id && milestone.completed) {
+        milestone.approved = true;
+      } else if (commission.artist_id == user.id) {
+        milestone.completed = true;
+      }
+
+      const { data, error: seterror } = await supabase
+        .from("milestones")
+        .update([milestone])
+        .eq("id", milestone.id)
+        .select("*")
+        .single();
+
+      if (!seterror) {
+        milestone = data as Milestone;
+      }
     }),
 });

@@ -30,6 +30,7 @@ export type CommissionInsert = {
   id?: string;
   price?: number | null;
   work_id?: string | null;
+  user_id?: string | null;
 };
 
 export type CommissionUpdate = {

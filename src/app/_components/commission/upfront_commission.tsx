@@ -7,7 +7,7 @@ export interface UpfrontCommission {
   user_id: string;
 }
 
-export const milestones = function (price: number) {
+export const upfrontMilestones = function (price: number) {
   return [
     {
       amount: price,
@@ -29,7 +29,7 @@ export const UpfrontCommission = (props: UpfrontCommission) => {
   return (
     <Commission
       price={props.price}
-      milestones={milestones(props.price)}
+      milestones={upfrontMilestones(props.price)}
       artist_id={props.artist_id}
       user_id={props.user_id}
       id={""}
