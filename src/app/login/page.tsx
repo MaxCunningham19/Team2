@@ -26,10 +26,12 @@ export default function LoginPage() {
     const [err, setErr] = useState<null | string>(null);
     const [isSignUp, setIsSignUp] = useState(false);
     const [accountType, setAccountType] = useState(""); // Track selected value
+    const [loading, setLoading] = useState(false); // Track loading state
     const router = useRouter();
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        setLoading(true);
         const formData = new FormData(e.target as HTMLFormElement);
 
         // Manually append the accountType since it's not captured automatically
@@ -45,6 +47,7 @@ export default function LoginPage() {
         } else {
             router.push(nextpage);
         }
+        setLoading(false);
     }
 
     return (
@@ -109,14 +112,15 @@ export default function LoginPage() {
                             />
                         </div>
                         <CardFooter className="flex flex-col space-y-2">
-                            <Button type="submit" className="w-full">
-                                {isSignUp ? "Sign up" : "Log in"}
+                            <Button type="submit" className="w-full" disabled={loading}>
+                                {loading ? "Processing..." : isSignUp ? "Sign up" : "Log in"}
                             </Button>
                             <Button
                                 type="button"
                                 variant="outline"
                                 className="w-full"
                                 onClick={() => setIsSignUp(!isSignUp)}
+                                disabled={loading}
                             >
                                 {isSignUp ? "Switch to Log in" : "Switch to Sign up"}
                             </Button>
