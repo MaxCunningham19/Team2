@@ -20,7 +20,7 @@ const HomeHero2 = () => {
         <Image
           src={PearlEarring}
           alt="Girl with a pearl earring"
-          className="w-96 shadow-xl shadow-neutral-800/80"
+          className="w-96 shadow-xl shadow-neutral-800/80 rounded-sm"
         />
         <div className="absolute bottom-4 left-4 w-64 bg-primary/80 p-2 text-primary-foreground">
           <h3 className="font-bold text-lg">Girl with a Pearl Earring</h3>
