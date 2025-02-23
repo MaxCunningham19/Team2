@@ -37,6 +37,38 @@ export const commissionRouter = createTRPCRouter({
       return { commission: data as Commission, error };
     }),
 
+  getCommissionsByUserID: publicProcedure
+    .input(
+      z.object({
+        userID: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const supabase = createClient();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { data, error } = await supabase
+        .from("commissions")
+        .select(`*`)
+        .eq("user_id", input.userID)
+      return { commission: data as Commission[], error };
+    }),
+
+  getCommissionsByArtistID: publicProcedure
+    .input(
+      z.object({
+        artistID: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const supabase = createClient();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { data, error } = await supabase
+        .from("commissions")
+        .select(`*`)
+        .eq("artist_id", input.artistID)
+      return { commission: data as Commission[], error };
+    }),
+
   getMilestones: publicProcedure
     .input(
       z.object({
