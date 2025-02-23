@@ -80,4 +80,32 @@ export const commissionRouter = createTRPCRouter({
         milestoneIDs: milestoneID.id as string,
       };
     }),
+
+  getCommissionAndMilestones: publicProcedure
+    .input(
+      z.object({
+        commissionID: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const supabase = createClient();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { data, error } = await supabase
+        .from("commissions")
+        .select(`*`)
+        .eq("id", input.commissionID)
+        .single();
+
+      if (!!error) {
+        return { commission: null, milestones: null, error };
+      }
+
+      const { data: milestonesData, error: milestonesError } = await supabase
+        .from("milestones")
+        .select(`*`)
+        .eq("commission_id", input.commissionID);
+
+      const milestones = milestonesData as Milestone[];
+      return { commission: data as Commission, milestones: milestones, error };
+    }),
 });

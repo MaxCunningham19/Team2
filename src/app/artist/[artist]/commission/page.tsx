@@ -50,7 +50,16 @@ export default function NewCommission() {
             min="0"
           />
         </div>
-        <Button className="w-full" onClick={createCommission}>
+        <Button
+          className="w-full"
+          onClick={async () => {
+            await createCommission({
+              artist_id: artist as string,
+              price: price,
+              desc: desc,
+            });
+          }}
+        >
           Submit
         </Button>
       </CardContent>

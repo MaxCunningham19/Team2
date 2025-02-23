@@ -8,6 +8,7 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { commission, milestones, error } =
     await api.commission.getCommissionAndMilestones({ commissionID: id });
 
