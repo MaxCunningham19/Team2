@@ -20,7 +20,8 @@ export const Milestone = (props: {
 
       <div>{props.completed}</div>
 
-      <div>{content_url}</div>
+      <div>{props.content_url}</div>
+
       <div>{props.desc}</div>
     </div>
   );
