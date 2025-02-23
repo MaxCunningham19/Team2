@@ -16,6 +16,7 @@ export type User = {
 };
 
 export type Commision = {
+  user_id: string;
   artist_id: string;
   created_at: string;
   id: string;
@@ -24,7 +25,8 @@ export type Commision = {
 };
 
 export type CommisionInsert = {
-  artist_id?: string;
+  user_id: string;
+  artist_id: string;
   created_at?: string;
   id?: string;
   price?: number | null;
@@ -32,9 +34,9 @@ export type CommisionInsert = {
 };
 
 export type CommisionUpdate = {
+  user_id?: string;
   artist_id?: string;
   created_at?: string;
-  id?: string;
   price?: number | null;
   work_id?: string | null;
 };
