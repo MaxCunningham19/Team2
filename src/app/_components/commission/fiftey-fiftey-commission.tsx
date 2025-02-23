@@ -10,22 +10,35 @@ export interface UpfrontCommission {
 export const milestones = function (price: number) {
   return [
     {
-      amount: price,
-      percent: 100,
+      amount: price / 2,
+      percent: 50,
       approved: false,
       artist_notes: "",
       buyer_notes: "",
       completed: false,
       content_url: null,
-      title: "Upfront Payment",
-      desc: "pay commission before recieving work",
+      title: "Inital Payment",
+      desc: "Inital payment to initate commition",
       order_id: 0,
+      isLast: false,
+    },
+    {
+      amount: price / 2,
+      percent: 50,
+      approved: false,
+      artist_notes: "",
+      buyer_notes: "",
+      completed: false,
+      content_url: null,
+      title: "Final Payment",
+      desc: "pay commission upon completion of work",
+      order_id: 1,
       isLast: true,
     },
   ];
 };
 
-export const UpfrontCommission = (props: UpfrontCommission) => {
+export const FifteyFifteyCommission = (props: UpfrontCommission) => {
   return (
     <Commission
       price={props.price}
