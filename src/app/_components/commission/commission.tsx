@@ -1,13 +1,13 @@
-import Milestone, { MilestoneProps } from "./milestone";
+import Milestone, { type MilestoneProps } from "./milestone";
 
 export interface CommissionProps {
   price: number;
   milestones: MilestoneProps[];
-  work_id: string;
+  work_id?: string;
   artist_id: string;
-  created_at: string;
+  created_at?: string;
   user_id: string;
-  id: string;
+  id?: string;
 }
 
 export const Commission = (props: CommissionProps) => {
