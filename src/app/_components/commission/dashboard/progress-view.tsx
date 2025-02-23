@@ -11,9 +11,9 @@ export const ProgressView = ({ currentCommission }: { currentCommission: Commiss
       <div className="flex flex-row items-center space-x-4">
         <Image className="h-12 w-12 rounded-full" src={PearlEarring} alt="Pearl earring" />
         <div className="flex flex-col">
-          <h1 className="text-2xl font-bold">{currentCommission.desc}</h1>
+          <h1 className="text-2xl font-bold">{currentCommission?.desc ?? "Girl with a Pearl Earring"}</h1>
           <h3 className="flex flex-row gap-x-2">
-            {currentCommission.artist_id}
+            {currentCommission?.artist_id ?? "Johannes Vermeer"}
             <span>⋅</span>
             <span className="text-accent/80">In Progress</span>
           </h3>
@@ -22,11 +22,11 @@ export const ProgressView = ({ currentCommission }: { currentCommission: Commiss
 
       <div className="my-auto">
         <CommComponent
-          price={currentCommission.price ?? 1}
-          milestones={threeStepMilestones(currentCommission.price ?? 1)}
-          artist_id={currentCommission.artist_id}
-          user_id={currentCommission.user_id}
-          id={currentCommission.id}
+          price={currentCommission?.price ?? 1000}
+          milestones={threeStepMilestones(currentCommission?.price ?? 1000)}
+          artist_id={currentCommission?.artist_id ?? ""}
+          user_id={currentCommission?.user_id ?? ""}
+          id={currentCommission?.id ?? ""}
         />
       </div>
     </div>

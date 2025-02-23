@@ -7,6 +7,7 @@ import { ArtCard } from "~/app/_components/art-card"
 import { CreateNewWorkDialog } from "~/app/_components/artist-page/create-new-work-dialog"
 import { EditProfileDialog } from "~/app/_components/artist-page/edit-profile-dialog";
 import Header from "~/app/_components/header";
+import ExplorePage from "~/app/explore/page";
 
 
 export default async function Page({
@@ -50,19 +51,7 @@ export default async function Page({
             )}
           </div>
         </div>
-        <div className="mx-auto mt-10 grid grid-cols-3 gap-x-32 gap-y-20">
-          <ArtCard />
-          <ArtCard />
-          <ArtCard />
-          <ArtCard />
-          <ArtCard />
-          <ArtCard />
-          <ArtCard />
-          <ArtCard />
-          <ArtCard />
-          <ArtCard />
-          <ArtCard />
-        </div>
+        <ExplorePage />
       </div>
     </>
   );
