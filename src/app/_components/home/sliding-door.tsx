@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
 
 export default function SlidingDoorLayout({
   children,
@@ -18,17 +18,17 @@ export default function SlidingDoorLayout({
         // Reset scroll to the top
         window.scrollTo(0, 0);
         // Lock scrolling
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = "hidden";
         void runDoorAnimation();
       }
     };
 
-    window.addEventListener('wheel', handleUserScroll, { passive: true });
-    window.addEventListener('touchmove', handleUserScroll, { passive: true });
+    window.addEventListener("wheel", handleUserScroll, { passive: true });
+    window.addEventListener("touchmove", handleUserScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('wheel', handleUserScroll);
-      window.removeEventListener('touchmove', handleUserScroll);
+      window.removeEventListener("wheel", handleUserScroll);
+      window.removeEventListener("touchmove", handleUserScroll);
     };
   }, [animationStarted]);
 
@@ -47,14 +47,14 @@ export default function SlidingDoorLayout({
     // Hide the door elements after animation
     setDoorsVisible(false);
     // Unlock scrolling
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   };
 
   return (
     <>
       {children}
       {doorsVisible && (
-        <div className="fixed flex h-screen w-screen flex-row z-10 top-0">
+        <div className="fixed top-0 z-10 flex h-screen w-screen flex-row">
           <motion.div
             className="flex h-full w-full items-center justify-end bg-white"
             animate={leftControls}
@@ -65,7 +65,7 @@ export default function SlidingDoorLayout({
             </h1>
           </motion.div>
           <motion.div
-            className="flex h-full w-full items-center bg-accent text-accent-foreground"
+            className="bg-accent text-accent-foreground flex h-full w-full items-center"
             animate={rightControls}
             initial={{ x: 0 }}
           >
@@ -77,4 +77,4 @@ export default function SlidingDoorLayout({
       )}
     </>
   );
-};
+}

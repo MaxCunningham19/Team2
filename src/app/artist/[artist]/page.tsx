@@ -22,7 +22,6 @@ export default async function Page({
 
   return (
     <>
-      <Header />
       <div className="bg-primary h-80 w-screen"></div>
       <div className="relative flex flex-col">
         <Image

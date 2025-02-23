@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { type ReactElement, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,9 +14,7 @@ import {
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
@@ -51,7 +49,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100">
+        <div className="flex z-60 min-h-screen items-center justify-center bg-gray-100">
             <Card className="w-full max-w-sm bg-white p-6 shadow-none">
                 <CardHeader>
                     <CardTitle className="text-center text-xl font-semibold">

@@ -16,9 +16,12 @@ const HomeHero2 = () => {
             <Button>Explore</Button>
           </Link>
           <Button>Commission</Button>
-          <Button>Sell</Button>
+          <Link href={"/login"}>
+            <Button>Sell</Button>
+          </Link>
         </div>
       </div>
+
       <div className="relative">
         <Image
           src={PearlEarring}
