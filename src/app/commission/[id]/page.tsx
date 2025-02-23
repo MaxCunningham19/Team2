@@ -29,10 +29,14 @@ export default async function Page({
 
   let milestoneProps: MilestoneProps[] = [];
   if (milestones !== null) {
-    milestoneProps = milestones.map((milestone) => {
+    milestones.sort((a, b) => {
+      return a.order_id - b.order_id;
+    });
+    milestoneProps = milestones.map((milestone, index) => {
       return {
         ...milestone,
         percent: milestone.amount / (commission.price ?? milestone.amount),
+        isLast: index == milestones.length - 1,
       };
     });
   }
