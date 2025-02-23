@@ -70,7 +70,7 @@ export default function Page() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto px-24 py-8">
       <div className="mb-12 mt-32 space-y-6">
         <h2 className="font-serif text-7xl text-foreground">Explore</h2>
 

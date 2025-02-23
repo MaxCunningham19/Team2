@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 const navItems = [
   { title: "Home", href: "/" },
   { title: "Explore", href: "/explore" },
-  { title: "Commissions", href: "/commissions" },
+  { title: "Commissions", href: "/account/commissions" },
 ];
 
 export default function Header() {
