@@ -5,7 +5,7 @@ import Link from "next/link";
 import { X, Plus, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { WorkCard } from "../_components/work/work-card";
-
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,7 +38,7 @@ export default function Page() {
   const [underlineStyle, setUnderlineStyle] = useState({});
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
-  const { data: allWorksData, isSuccess } = api.work.getAllWorks.useQuery()
+  const { data: allWorksData, isSuccess } = api.work.getAllWorks.useQuery();
 
   const addFilter = (category: string, value: string) => {
     setSelectedFilters((prev) => [...prev, { category, value }]);
@@ -119,10 +119,11 @@ export default function Page() {
                 ref={(el) => {
                   navRefs.current[index] = el;
                 }}
-                className={`${index === activeNavItem ? "text-foreground" :
-                  "text-primary hover:text-foreground"
-                  } inline-block pb-2 text-lg
-                  transition-colors`}
+                className={`${
+                  index === activeNavItem
+                    ? "text-foreground"
+                    : "text-primary hover:text-foreground"
+                } inline-block pb-2 text-lg transition-colors`}
                 onClick={() => setActiveNavItem(index)}
               >
                 {item}
@@ -138,27 +139,28 @@ export default function Page() {
 
       {/* Gallery Grid */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {isSuccess && allWorksData?.map((work) => (
-          <Link
-            key={work.id}
-            href={`/work/${work.id}`}
-            className="group overflow-hidden rounded-lg bg-secondary/50 transition-shadow hover:shadow-lg"
-          >
-            <Image
-              src={work.image_url}
-              alt="Photograph of the artwork."
-              width={400}
-              height={300}
-              className="aspect-4/3 w-full object-cover"
-            />
-            <div className="p-4">
-              <h3 className="font-serif font-bold text-xl text-foreground transition-colors group-hover:text-primary">
-                {work.title}
-              </h3>
-              <p>{work.desc}</p>
-            </div>
-          </Link>
-        ))}
+        {isSuccess &&
+          allWorksData?.map((work) => (
+            <Link
+              key={work.id}
+              href={`/work/${work.id}`}
+              className="group overflow-hidden rounded-lg bg-secondary transition-shadow hover:shadow-lg"
+            >
+              <Image
+                src={work.image_url}
+                alt="Photograph of the artwork."
+                width={400}
+                height={300}
+                className="aspect-4/3 w-full object-cover"
+              />
+              <div className="p-4">
+                <h3 className="font-serif text-xl font-bold text-foreground transition-colors group-hover:text-primary">
+                  {work.title}
+                </h3>
+                <p>{work.desc}</p>
+              </div>
+            </Link>
+          ))}
       </div>
     </main>
   );
