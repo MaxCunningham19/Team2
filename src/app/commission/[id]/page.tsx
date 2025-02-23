@@ -8,12 +8,24 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
+
   const { commision, milestones, error } =
     await api.commision.getCommissionAndMilestones({ commisionID: id });
 
   if (!!error || commision == null) {
     return <div> </div>;
   }
+
+  const { user, artist } = await api.account.getUserAndArtist();
+
+  if (
+    user == null ||
+    user.id != commision.user_id ||
+    artist?.id != commision.artist_id
+  ) {
+    return <div></div>;
+  }
+
   let milestoneParams: MilestoneParams[] = [];
   if (milestones !== null) {
     milestoneParams = milestones as MilestoneParams[];
@@ -26,6 +38,7 @@ export default async function Page({
       work_id={commision.work_id}
       artist_id={commision.artist_id}
       created_at={commision.created_at}
+      user_id={commision.user_id}
       id={commision.id}
     />
   );
