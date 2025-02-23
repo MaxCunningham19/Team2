@@ -15,7 +15,7 @@ export type User = {
   stripe_customer_id: string;
 };
 
-export type commission = {
+export type Commission = {
   user_id: string;
   artist_id: string;
   created_at: string;
@@ -24,17 +24,15 @@ export type commission = {
   work_id: string | null;
 };
 
-export type commissionInsert = {
-  user_id: string;
-  artist_id: string;
+export type CommissionInsert = {
+  artist_id?: string;
   created_at?: string;
   id?: string;
   price?: number | null;
   work_id?: string | null;
 };
 
-export type commissionUpdate = {
-  user_id?: string;
+export type CommissionUpdate = {
   artist_id?: string;
   created_at?: string;
   price?: number | null;
@@ -126,9 +124,9 @@ export type Database = {
         Relationships: [];
       };
       commissions: {
-        Row: commission;
-        Insert: commissionInsert;
-        Update: commissionUpdate;
+        Row: Commission;
+        Insert: CommissionInsert;
+        Update: CommissionUpdate;
         Relationships: [
           {
             foreignKeyName: "commissions_artist_id_fkey";

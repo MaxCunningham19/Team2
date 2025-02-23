@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/app/_components/ui/dropdown-menu";
+import { Button } from "../_components/ui/button";
 
 // Filter categories and options
 const filterOptions = {
@@ -61,19 +62,19 @@ export default function Page() {
           <input
             type="search"
             placeholder="Search for..."
-            className="w-full rounded-lg border border-border bg-secondary px-6 py-4 text-foreground placeholder:text-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full rounded-lg border border-border bg-muted px-6 py-4 text-foreground placeholder:text-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
 
           <div className="flex flex-wrap gap-2">
             {selectedFilters.map((filter, index) => (
-              <button
+              <Button
                 key={index}
-                className="inline-flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-primary transition-colors hover:bg-secondary/80"
+                className="inline-flex items-center gap-2 rounded-lg bg-muted px-4 py-2 text-primary transition-colors hover:bg-secondary/80"
                 onClick={() => removeFilter(index)}
               >
                 {filter.value}
                 <X className="h-4 w-4" />
-              </button>
+              </Button>
             ))}
 
             <DropdownMenu>
@@ -110,7 +111,9 @@ export default function Page() {
             <li key={index}>
               <Link
                 href="#"
-                ref={(el) => (navRefs.current[index] = el)}
+                ref={(el) => {
+                  navRefs.current[index] = el;
+                }}
                 className={`${index === activeNavItem ? "text-foreground" :
                   "text-primary hover:text-foreground"
                   } inline-block pb-2 text-lg
