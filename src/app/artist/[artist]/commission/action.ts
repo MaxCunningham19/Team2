@@ -11,44 +11,64 @@ export const createCommission = async function (params: {
 }) {
   const supabase = await createClient();
 
-  const { error } = await supabase
-    .from("commission")
-    .insert([params.commission])
-    .eq("id", params.commission.id)
+  console.log("commision", params.commission);
+
+  const { data: commisionData, error } = await supabase
+    .from("commissions")
+    .insert([
+      {
+        artist_id: params.commission.artist_id,
+        // created_at: params.commission.created_at,
+        desc: params.commission.desc,
+        price: params.commission.price,
+        user_id: params.commission.user_id,
+        work_id: params.commission.work_id,
+      },
+    ])
+    .select("id")
+    .single();
 
   if (!!error) {
+    console.log("error", error);
     return { error: error };
   }
 
   if (params.milestones.length <= 0) {
-    return { commissionID: params.commission.id as string };
+    return { commissionID: commisionData.id as string };
   }
 
   const milestonesWithCommissionId = params.milestones.map((milestone) => ({
-    ...milestone,
-    commission_id: params.commission.id as string, // Add commission ID to each milestone
+    order_id: milestone.order_id,
+    amount: milestone.amount,
+    desc: milestone.desc || "",
+    title: milestone.title || "",
+    pending: true,
+    commission_id: commisionData.id as string, // Add commission ID to each milestone
   }));
 
   milestonesWithCommissionId.sort((a, b) => {
     return a.order_id - b.order_id;
   });
+
+  console.log(milestonesWithCommissionId);
   const { data: milestoneIDs, error: milesoneError } = await supabase
     .from("milestones")
-    .insert([milestonesWithCommissionId])
+    .insert(milestonesWithCommissionId)
     .select("id");
 
-  if (!!error) {
+  if (!!milesoneError) {
+    console.log("milesoneError", milesoneError);
     const { error: deleteError } = await supabase
-      .from("commission")
+      .from("commissions")
       .delete()
-      .eq("id", params.commission.id);
-
+      .eq("id", commisionData.id);
+    console.log("deletedError", deleteError);
     return { error: milesoneError, deleted: !deleteError };
   }
 
   return {
-    commissionID: params.commission.id as string,
-    milestoneIDs: milestoneIDs as string[] | null,
+    commissionID: commisionData.id as string,
+    milestoneIDs: milestoneIDs as unknown as string[] | null,
   };
 };
 
