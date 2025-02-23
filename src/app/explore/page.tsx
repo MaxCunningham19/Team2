@@ -15,6 +15,7 @@ import {
 import { Button } from "../_components/ui/button";
 import type { Work } from "~/utils/supabase/types";
 import { api } from "~/trpc/react";
+import { Transition } from "@headlessui/react";
 
 // Filter categories and options
 const filterOptions = {
@@ -36,12 +37,11 @@ export default function Page() {
   const [underlineStyle, setUnderlineStyle] = useState({});
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
-  // 1. State for selected work (for the modal)
+  // State for selected work (for the modal)
   const [selectedWork, setSelectedWork] = useState<Work | null>(null);
 
   const { data: allWorksData, isSuccess } = api.work.getAllWorks.useQuery();
 
-  // Add or remove filters
   const addFilter = (category: string, value: string) => {
     setSelectedFilters((prev) => [...prev, { category, value }]);
   };
@@ -50,7 +50,6 @@ export default function Page() {
     setSelectedFilters((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // For the nav underline
   useEffect(() => {
     const activeNav = navRefs.current[activeNavItem];
     if (activeNav) {
@@ -61,7 +60,7 @@ export default function Page() {
     }
   }, [activeNavItem]);
 
-  // 2. Handlers to open/close modal
+  // Handlers to open/close modal
   const handleCardClick = (work: Work) => {
     setSelectedWork(work);
   };
@@ -156,7 +155,7 @@ export default function Page() {
             <Card
               key={work.id}
               className="w-full max-w-md cursor-pointer overflow-hidden bg-[#fbfbfb]"
-              onClick={() => handleCardClick(work)} // 3. Open the modal on click
+              onClick={() => handleCardClick(work)}
             >
               <CardContent className="p-0">
                 <Image
@@ -177,34 +176,56 @@ export default function Page() {
           ))}
       </div>
 
-      {/* 4. Modal for Expanded View */}
-      {selectedWork && (
+      {/* Modal with Transition */}
+      <Transition
+        show={!!selectedWork}
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-200"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-lg rounded-md bg-white p-6">
-            <button
-              className="float-right mb-2 inline-block rounded bg-gray-200 px-2 py-1 text-sm hover:bg-gray-300"
-              onClick={handleCloseModal}
-            >
-              Close
-            </button>
-            <div className="mt-8">
-              <h2 className="mb-2 text-2xl font-bold">{selectedWork.title}</h2>
-              <p className="mb-4 text-gray-700">{selectedWork.desc}</p>
-              <Image
-                src={selectedWork.image_url}
-                alt="Expanded Artwork"
-                width={600}
-                height={400}
-                className="mb-4 w-full object-cover"
-              />
-              {/* Example buy button */}
-              <Button className="mt-2" variant="default">
-                Buy Now
-              </Button>
+          <Transition.Child
+            enter="transition-transform duration-300"
+            enterFrom="scale-95"
+            enterTo="scale-100"
+            leave="transition-transform duration-200"
+            leaveFrom="scale-100"
+            leaveTo="scale-95"
+          >
+            <div className="relative w-full max-w-lg rounded-md bg-white p-6">
+              <button
+                className="absolute right-2 top-2 rounded bg-gray-200 px-2 py-1 text-sm hover:bg-gray-300"
+                onClick={handleCloseModal}
+              >
+                Close
+              </button>
+              <div className="mt-8">
+                <h2 className="mb-2 text-2xl font-bold">
+                  {selectedWork?.title}
+                </h2>
+                <p className="mb-4 text-gray-700">{selectedWork?.desc}</p>
+                {selectedWork?.image_url && (
+                  <Image
+                    src={selectedWork.image_url}
+                    alt="Expanded Artwork"
+                    width={600}
+                    height={400}
+                    className="mb-4 w-full object-cover"
+                  />
+                )}
+
+                {/* Example buy button */}
+                <Button className="mt-2" variant="default">
+                  Buy Now
+                </Button>
+              </div>
             </div>
-          </div>
+          </Transition.Child>
         </div>
-      )}
+      </Transition>
     </main>
   );
 }
