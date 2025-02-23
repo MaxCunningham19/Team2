@@ -14,7 +14,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="container mx-auto px-4 pt-8">
+    <header className="container fixed top-0 z-[5] mx-auto px-4 pt-8">
       <div className="flex flex-col items-center gap-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -33,9 +33,8 @@ export default function Header() {
                   )}
                   <Link
                     href={item.href}
-                    className={`relative px-2 py-1 text-[#745543] transition-colors hover:text-[#a88a7c] ${
-                      pathname === item.href ? "text-[#a88a7c]" : ""
-                    }`}
+                    className={`relative px-2 py-1 text-[#745543] transition-colors hover:text-[#a88a7c] ${pathname === item.href ? "text-[#a88a7c]" : ""
+                      }`}
                   >
                     {item.title}
                   </Link>
