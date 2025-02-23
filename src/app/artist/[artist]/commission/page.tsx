@@ -1,10 +1,9 @@
 "use client";
 import { redirect, useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -27,20 +26,29 @@ import {
 } from "@/components/commission/three-step-commission";
 
 export default function NewCommission() {
-  // artist id from the url
   const { artist } = useParams();
-  void getUser().then((user) => {
-    setUser(user);
-  });
-
-  const [user, setUser] = useState<undefined | null | string>("");
+  const [user, setUser] = useState<null | string>(null);
   const [price, setPrice] = useState(0);
   const [desc, setDesc] = useState("");
 
-  if (user == null) {
-    redirect("/signup");
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const userData = await getUser();
+        setUser(userData);
+      } catch (error) {
+        redirect("/login");
+      }
+    }
+
+    void fetchUserData();
+  }, []);
+
+  // Handle redirect if user is not fetched
+  if (user === null) {
+    redirect("/login");
+    return null; // or loading state if needed
   }
-  // todo add in button handling for selecting your milestones
 
   return (
     <Card className="mx-auto w-full max-w-md p-4">
@@ -65,7 +73,7 @@ export default function NewCommission() {
           <Input
             type="number"
             className="w-full"
-            defaultValue={price}
+            value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
             min="0"
           />
