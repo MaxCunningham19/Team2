@@ -5,7 +5,7 @@ import Link from "next/link";
 import { X, Plus, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { WorkCard } from "../_components/work/work-card";
-
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -119,6 +119,11 @@ export default function Page() {
                 ref={(el) => {
                   navRefs.current[index] = el;
                 }}
+                className={`${
+                  index === activeNavItem
+                    ? "text-foreground"
+                    : "text-primary hover:text-foreground"
+                } inline-block pb-2 text-lg transition-colors`}
                 className={`${
                   index === activeNavItem
                     ? "text-foreground"
