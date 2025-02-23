@@ -13,9 +13,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { createCommission, getUser } from "./action";
-import { UpfrontCommission, milestones } from "@/components/commission/upfront_commission";
-import { FifteyFifteyCommission, milestones } from "@/components/commission/fiftey-fiftey-commission";
-import { ThreeStepCommission, milestones } from "@/components/commission/three-step-commission";
+import {
+  UpfrontCommission,
+  upfrontMilestones,
+} from "@/components/commission/upfront_commission";
+import {
+  FifteyFifteyCommission,
+  fifteyFifteyMilestones,
+} from "@/components/commission/fiftey-fiftey-commission";
+import {
+  ThreeStepCommission,
+  threeStepMilestones,
+} from "@/components/commission/three-step-commission";
 import { type User } from "~/utils/supabase/types";
 
 export default function NewCommission() {
@@ -25,7 +34,7 @@ export default function NewCommission() {
     setUser(user);
   });
 
-  const [user, setUser] = useState<undefined | null | User>(undefined);
+  const [user, setUser] = useState<undefined | null | string>(undefined);
   const [price, setPrice] = useState(0);
   const [desc, setDesc] = useState("");
 
@@ -65,39 +74,59 @@ export default function NewCommission() {
         <span>
           <Button
             onClick={async () => {
-              await createCommission({
-                commission: { price: price },
-                milestones: ,
-              });
-              return;
+              const { commissionID, milestoneIDs, error } =
+                await createCommission({
+                  commission: {
+                    price: price,
+                    user_id: user,
+                    artist_id: artist as string,
+                  },
+                  milestones: upfrontMilestones(price),
+                });
             }}
           >
             <UpfrontCommission
               price={price}
               artist_id={artist as string}
-              user_id={user?.artist_id ?? ""}
+              user_id={user ?? ""}
             />
           </Button>
           <Button
-            onClick={() => {
-              return;
+            onClick={async () => {
+              const { commissionID, milestoneIDs, error } =
+                await createCommission({
+                  commission: {
+                    price: price,
+                    user_id: user,
+                    artist_id: artist as string,
+                  },
+                  milestones: fifteyFifteyMilestones(price),
+                });
             }}
           >
             <FifteyFifteyCommission
               price={price}
               artist_id={artist as string}
-              user_id={user?.artist_id ?? ""}
+              user_id={user ?? ""}
             />
           </Button>
           <Button
-            onClick={() => {
-              return;
+            onClick={async () => {
+              const { commissionID, milestoneIDs, error } =
+                await createCommission({
+                  commission: {
+                    price: price,
+                    user_id: user,
+                    artist_id: artist as string,
+                  },
+                  milestones: threeStepMilestones(price),
+                });
             }}
           >
             <ThreeStepCommission
               price={price}
               artist_id={artist as string}
-              user_id={user?.artist_id ?? ""}
+              user_id={user ?? ""}
             />
           </Button>
         </span>
