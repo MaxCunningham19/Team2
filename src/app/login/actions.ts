@@ -67,7 +67,7 @@ export async function signup(formData: FormData) {
         if (artistSelectError) {
           console.error("Error fetching artist ID:", artistSelectError);
         } else {
-          artistId = artist.id;
+          artistId = artist.id as string;
         }
       }
     }
