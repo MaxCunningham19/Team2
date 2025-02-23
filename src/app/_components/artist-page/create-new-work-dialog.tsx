@@ -12,6 +12,10 @@ import { Button } from "../ui/button"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 
+import { convertBlobUrlToFile } from "@/lib/utils"
+import { uploadImage } from "@/utils/supabase/storage/client"
+import { useState, useTransition } from "react"
+
 import {
   Form,
   FormControl,
@@ -31,6 +35,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "~/lib/utils"
 import { Calendar } from "../ui/calendar"
 import { Checkbox } from "../ui/checkbox"
+import Image from "next/image"
 
 const formSchema = z.object({
   workTitle: z.string().min(2, {
@@ -40,6 +45,7 @@ const formSchema = z.object({
   price: z.optional(z.coerce.number()),
   onSale: z.boolean(),
   workDescription: z.optional(z.string()),
+  imageUrl: z.string(),
 })
 
 export const CreateNewWorkDialog = () => {
@@ -52,6 +58,37 @@ export const CreateNewWorkDialog = () => {
     console.log("Hello, world!")
     console.log(values)
   }
+
+  const [imageUrl, setImageUrl] = useState<string>("")
+  const [isPending, startTransition] = useTransition()
+
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    if (file) {
+      const url = URL.createObjectURL(file)
+      setImageUrl(url)
+    }
+  }
+
+  // TODO: Change this to a tRPC mutation that does this shit on the server side
+  async function handleUpload() {
+    startTransition(async () => {
+      const imageFile = await convertBlobUrlToFile(imageUrl);
+
+      const { imageUrl: uploadedImageUrl, error } = await uploadImage({
+        file: imageFile,
+        bucket: "assets",
+      });
+
+      console.log(uploadedImageUrl);
+      form.setValue("imageUrl", uploadedImageUrl)
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+    });
+  };
 
   return (
     <Dialog>
@@ -121,6 +158,25 @@ export const CreateNewWorkDialog = () => {
                           />
                         </PopoverContent>
                       </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-secondary-foreground">Upload Image of Work</FormLabel>
+                      <Input id="picture" type="file" onChange={handleFileChange} />
+                      {imageUrl && <Image src={imageUrl} alt="Selected image" width={200} height={200} />}
+                      <FormControl>
+                        <Button onClick={handleUpload} disabled={!imageUrl || isPending}>Upload</Button>
+                      </FormControl>
+                      <FormDescription>
+                        A photograph of your work; can be a digital scan, high quality photo, etc.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}

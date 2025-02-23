@@ -5,11 +5,123 @@ export type Json =
   | null
   | { [key: string]: Json | undefined }
   | Json[];
+<<<<<<< HEAD
+=======
+
+export type User = {
+  artist_id: string | null;
+  avatar_url: string | null;
+  created_at: string;
+  full_name: string | null;
+  id: string;
+  stripe_customer_id: string;
+};
+
+export type Commision = {
+  artist_id: string;
+  created_at: string;
+  id: string;
+  price: number | null;
+  work_id: string | null;
+};
+
+export type CommisionInsert = {
+  artist_id?: string;
+  created_at?: string;
+  id?: string;
+  price?: number | null;
+  work_id?: string | null;
+};
+
+export type CommisionUpdate = {
+  artist_id?: string;
+  created_at?: string;
+  id?: string;
+  price?: number | null;
+  work_id?: string | null;
+};
+
+export type Artist = {
+  background: string | null;
+  bio: string | null;
+  display_name: string | null;
+  id: string;
+  stripe_connected_account_id: string;
+};
+
+export type ArtistInsert = {
+  background?: string | null;
+  bio?: string | null;
+  display_name?: string | null;
+  id?: string;
+  stripe_connected_account_id: string;
+};
+
+export type ArtistUpdate = {
+  background?: string | null;
+  bio?: string | null;
+  display_name?: string | null;
+  id?: string;
+  stripe_connected_account_id?: string;
+};
+
+export type Milestone = {
+  amount: number;
+  approved: boolean | null;
+  artist_notes: string | null;
+  buyer_notes: string | null;
+  commission_id: string | null;
+  completed: boolean;
+  content_url: string | null;
+  desc: string;
+  id: string;
+  order_id: number;
+};
+
+export type MilestoneUpdate = {
+  amount?: number;
+  approved?: boolean | null;
+  artist_notes?: string | null;
+  buyer_notes?: string | null;
+  commission_id?: string | null;
+  completed?: boolean;
+  content_url?: string | null;
+  desc?: string;
+  id?: string;
+  order_id?: number;
+};
+
+export type MilestoneInsert = {
+  amount?: number;
+  approved?: boolean | null;
+  artist_notes?: string | null;
+  buyer_notes?: string | null;
+  commission_id?: string | null;
+  completed?: boolean;
+  content_url?: string | null;
+  desc: string;
+  id?: string;
+  order_id: number;
+};
+
+export type Work = {
+  artist_id: string;
+  created_at: string;
+  desc: string | null;
+  id: string;
+  image_url: string;
+  price: number | null;
+  quantity: number;
+  quantity_sold: number;
+  title: string;
+};
+>>>>>>> 8ee3b8849bda0cde57463239dbe92519249e9b3c
 
 export type Database = {
   public: {
     Tables: {
       artists: {
+<<<<<<< HEAD
         Row: {
           background: string | null;
           bio: string | null;
@@ -55,6 +167,17 @@ export type Database = {
           price?: number | null;
           work_id?: string | null;
         };
+=======
+        Row: Artist;
+        Insert: ArtistInsert;
+        Update: ArtistUpdate;
+        Relationships: [];
+      };
+      commissions: {
+        Row: Commision;
+        Insert: CommisionInsert;
+        Update: CommisionUpdate;
+>>>>>>> 8ee3b8849bda0cde57463239dbe92519249e9b3c
         Relationships: [
           {
             foreignKeyName: "commissions_artist_id_fkey";
@@ -73,6 +196,7 @@ export type Database = {
         ];
       };
       milestones: {
+<<<<<<< HEAD
         Row: {
           amount: number;
           approved: boolean | null;
@@ -109,6 +233,11 @@ export type Database = {
           id?: string;
           order_id?: number;
         };
+=======
+        Row: Milestone;
+        Insert: MilestoneInsert;
+        Update: MilestoneUpdate;
+>>>>>>> 8ee3b8849bda0cde57463239dbe92519249e9b3c
         Relationships: [
           {
             foreignKeyName: "milestones_commission_id_fkey";
@@ -120,6 +249,7 @@ export type Database = {
         ];
       };
       users: {
+<<<<<<< HEAD
         Row: {
           artist_id: string | null;
           avatar_url: string | null;
@@ -128,6 +258,9 @@ export type Database = {
           id: string;
           stripe_customer_id: string;
         };
+=======
+        Row: User;
+>>>>>>> 8ee3b8849bda0cde57463239dbe92519249e9b3c
         Insert: {
           artist_id?: string | null;
           avatar_url?: string | null;
@@ -285,8 +418,8 @@ export type TablesUpdate<
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
-    | { schema: keyof Database },
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    keyof PublicSchema["Enums"] | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
